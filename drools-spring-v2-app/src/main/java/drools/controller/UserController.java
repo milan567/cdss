@@ -31,27 +31,29 @@ public class UserController
     @Autowired
     private KieContainer kieContainer;
 
+    @Autowired
+    HttpServletRequest request;
 
     @RequestMapping(value = "/api/login", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginDTO, HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginDTO) {
         System.out.println("Username: " + loginDTO.getUsername());
         System.out.println("Password: " + loginDTO.getPassword());
+        System.out.println(request.toString());
         try {
             User user = this.userService.validateUser(loginDTO);
             if (user != null) {
-                request.getSession().setAttribute("currentUser", user);
-
-                /*
+                request.getSession(true).setAttribute("currentUser", user);
                 KieServices ks = KieServices.Factory.get();
                 KieBaseConfiguration kbconf = ks.newKieBaseConfiguration();
                 kbconf.setOption(EventProcessingOption.STREAM);
                 KieBase kbase = kieContainer.newKieBase(kbconf);
                 KieSession kieSession = kbase.newKieSession();
                 request.getSession().setAttribute("kieSession", kieSession);
-                */
             }
-            System.out.println(user);
+            System.out.println("--------------");
+            System.out.println(request.getSession().getAttribute("currentUser"));
+            System.out.println("--------------");
             return new ResponseEntity<>(new LoginResponseDTO(null, user.getId(),loginDTO.getUsername(),user.getUserAuthority().toString()), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>("Invalid login", HttpStatus.BAD_REQUEST);

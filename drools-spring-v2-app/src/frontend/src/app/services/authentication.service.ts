@@ -21,7 +21,7 @@ export class AuthenticationService
     let param = JSON.stringify(authenticationRequest);
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post("http://localhost:8080/api/login", param, { headers : headers })
+    return this.http.post("api/login", param, { headers : headers })
       .map(res => res.json());
   }
 

@@ -15,6 +15,9 @@ import {HomeComponent} from "./components/home/home.component";
 import { AuthenticationService } from "./services/authentication.service";
 
 import { routing } from "./app.routes";
+import {DiagnosisComponent} from './components/diagnosis/diagnosis.component';
+import {DiagnoseService} from './services/diagnose.service';
+import {SymptomService} from './services/symptom.service';
 
 
 enableProdMode();
@@ -36,6 +39,7 @@ enableProdMode();
     NavbarComponent,
 
     HomeComponent,
+    DiagnosisComponent
   ],
   providers: [
     /*{
@@ -45,6 +49,8 @@ enableProdMode();
       multi: true
     },*/
     AuthenticationService,
+    SymptomService,
+    DiagnoseService,
   ],
   bootstrap:    [ AppComponent ]
 })

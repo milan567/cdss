@@ -1,0 +1,35 @@
+<div class="register">
+  <h3>Pregled</h3>
+
+  <div class="form-group">
+    <label for="rep">Unesite broj kartona:</label>
+    <input type="text" class="form-control" id="rep" placeholder="Pacijent" name="usr" [(ngModel)]="patient" >
+  </div>
+
+  <div class="form-group" *ngIf="diseaseSymptoms.length != 0">
+    <label for="symptomsOfDisease">Simptomi bolesti</label>
+    <table class="table table-hover" id ="symptomsOfDisease">
+      <tbody>
+      <tr *ngFor="let item of diseaseSymptoms | paginate: {itemsPerPage:2, currentPage: p}">
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.text" class="form-control" /></fieldset></td>
+        <td><button type="submit" (click)="removeSymptom(item.id)" class="btn btn-primary" id="diseaseButton">
+          Ukloni simptom
+        </button></td>
+      </tr>
+      </tbody>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </div>
+
+
+  <div class="form-group">
+    <label for="exampleSelect1">Dodajte simptom:</label>
+    <select   class="form-control" id="exampleSelect1" [(ngModel)]="option">
+      <option *ngFor="let item of symptoms">{{item.text}}</option>
+    </select>
+    <button type="submit" (click)="addSymptom()"  class="btn btn-primary" id="addSymptomButton">Dodaj simptom</button>
+    <button type="submit" (click)="diagnose()"  class="btn btn-primary" id="registerButton">Odredi dijagnozu</button>
+
+  </div>
+
+</div>
