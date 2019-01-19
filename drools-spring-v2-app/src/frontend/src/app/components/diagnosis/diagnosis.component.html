@@ -1,9 +1,12 @@
 <div class="register">
   <h3>Pregled</h3>
 
-  <div class="form-group">
+  <p *ngIf="currentPatient">Pacijent: {{currentPatient.patientName}} {{currentPatient.patientSurame}}</p>
+
+  <div class="form-group" *ngIf="currentPatient">
     <label for="rep">Unesite broj kartona:</label>
-    <input type="text" class="form-control" id="rep" placeholder="Pacijent" name="usr" [(ngModel)]="patient" >
+    <input type="text" class="form-control" id="rep" placeholder="Pacijent" name="usr"
+           [(ngModel)]="currentPatient.id" disabled>
   </div>
 
   <div class="form-group" *ngIf="diseaseSymptoms.length != 0">
@@ -24,12 +27,18 @@
 
   <div class="form-group">
     <label for="exampleSelect1">Dodajte simptom:</label>
-    <select   class="form-control" id="exampleSelect1" [(ngModel)]="option">
-      <option *ngFor="let item of symptoms">{{item.text}}</option>
-    </select>
-    <button type="submit" (click)="addSymptom()"  class="btn btn-primary" id="addSymptomButton">Dodaj simptom</button>
-    <button type="submit" (click)="diagnose()"  class="btn btn-primary" id="registerButton">Odredi dijagnozu</button>
-
+    <div class="form-inline">
+      <select   class="form-control" id="exampleSelect1" [(ngModel)]="option">
+        <option *ngFor="let item of symptoms">{{item.text}}</option>
+      </select>
+      <button type="submit" (click)="addSymptom()"  class="btn btn-primary" id="addSymptomButton">Dodaj simptom</button>
+    </div>
   </div>
 
+
+  <div class="form-group">
+    <button type="submit" (click)="diagnose()"  class="btn btn-primary" id="registerButton">Pokreni rezoner</button>
+    <button type="submit" (click)="diagnose()"  class="btn btn-primary" id="registerButton">Potencijalne bolesti</button>
+    <button type="submit" (click)="diagnose()"  class="btn btn-primary" id="registerButton">Uspostavi dijagnozu</button>
+  </div>
 </div>

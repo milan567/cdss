@@ -12,13 +12,14 @@ import {enableProdMode} from '@angular/core';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AppComponent }  from './app.component';
 import {HomeComponent} from "./components/home/home.component";
-import { AuthenticationService } from "./services/authentication.service";
+import { PatientsComponent} from './components/patients/patients.component';
+import {DiagnosisComponent} from './components/diagnosis/diagnosis.component';
 
 import { routing } from "./app.routes";
-import {DiagnosisComponent} from './components/diagnosis/diagnosis.component';
 import {DiagnoseService} from './services/diagnose.service';
 import {SymptomService} from './services/symptom.service';
-
+import { AuthenticationService } from "./services/authentication.service";
+import {PatientService} from './services/patient.service';
 
 enableProdMode();
 
@@ -39,7 +40,8 @@ enableProdMode();
     NavbarComponent,
 
     HomeComponent,
-    DiagnosisComponent
+    DiagnosisComponent,
+    PatientsComponent,
   ],
   providers: [
     /*{
@@ -51,6 +53,7 @@ enableProdMode();
     AuthenticationService,
     SymptomService,
     DiagnoseService,
+    PatientService,
   ],
   bootstrap:    [ AppComponent ]
 })

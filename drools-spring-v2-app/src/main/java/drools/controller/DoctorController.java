@@ -30,6 +30,7 @@ public class DoctorController {
             diseaseService.diagnose(diagnosePatientDTO,(KieSession)request.getSession().getAttribute("kieSession"));
             return new ResponseEntity<>(null, HttpStatus.OK);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new ResponseEntity<>("Invalid request", HttpStatus.BAD_REQUEST);
         }
     }

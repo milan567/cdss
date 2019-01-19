@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="patient-table">
+  <table class="table patient-table">
+    <thead>
+    <tr>
+      <th scope="col">Broj kartona</th>
+      <th scope="col">Ime</th>
+      <th scope="col">Prezime</th>
+      <th scope="col">Opcije</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="table-row" *ngFor="let patient of patients">
+      <th scope="row">{{patient.id}}</th>
+      <td>{{patient.patientName}}</td>
+      <td>{{patient.patientSurame}}</td>
+      <td><button class="button" (click)="getDiagnose(patient.id)">Dijagnoza</button>
+          <button class="button">Profil</button></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

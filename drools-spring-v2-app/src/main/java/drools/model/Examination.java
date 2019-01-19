@@ -11,24 +11,12 @@ public class Examination {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
-
     @Column(name = "examination_date")
     @Temporal(TemporalType.DATE)
     private Date date;
 
     @ManyToOne
     private User doctor;
-
-    public User getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(User doctor) {
-        this.doctor = doctor;
-    }
-
-    @ManyToOne
-    private Patient patient;
 
     @ManyToOne
     private Disease disease;
@@ -39,13 +27,19 @@ public class Examination {
     @ManyToMany
     private List<Medication> medications;
 
+    public User getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(User doctor) {
+        this.doctor = doctor;
+    }
 
     @Override
     public String toString() {
         return "Examination{" +
                 "id=" + id +
                 ", date=" + date +
-                ", patient=" + patient +
                 ", disease=" + disease +
                 ", symptoms=" + symptoms +
                 ", medications=" + medications +
@@ -64,10 +58,9 @@ public class Examination {
         return date;
     }
 
-    public Examination(Date date, User doctor, Patient patient, Disease disease, List<Symptom> symptoms, List<Medication> medications) {
+    public Examination(Date date, User doctor, Disease disease, List<Symptom> symptoms, List<Medication> medications) {
         this.date = date;
         this.doctor = doctor;
-        this.patient = patient;
         this.disease = disease;
         this.symptoms = symptoms;
         this.medications = medications;
@@ -77,19 +70,12 @@ public class Examination {
         this.date = date;
     }
 
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
     public Disease getDisease() {
         return disease;
     }
 
     public void setDisease(Disease disease) {
+        System.out.println("Disease created");
         this.disease = disease;
     }
 
@@ -112,7 +98,6 @@ public class Examination {
     public Examination(Date date, Patient patient, Disease disease, List<Symptom> symptoms, List<Medication> medications) {
 
         this.date = date;
-        this.patient = patient;
         this.disease = disease;
         this.symptoms = symptoms;
         this.medications = medications;

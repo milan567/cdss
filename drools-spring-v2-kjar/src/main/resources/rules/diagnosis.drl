@@ -1,0 +1,133 @@
+package rules;
+
+import drools.model.*;
+import java.util.List;
+
+agenda-group "diseases-group"
+
+rule "Prehlada"
+	no-loop
+	lock-on-active true
+	salience ($sdc.getSymptomsSatisfied()/$sdc.getSymptomsNumber()*100)
+	when
+		$d : Disease( disease == "Prehlada" )
+		$ex : Examination(disease == null , $symptoms: symptoms)
+		$sdc : Salience( $s : symptomsSatisfied >=4 ) from accumulate(
+			$symptom : Symptom (
+				text == "Curenje iz nosa" ||
+				text == "Bol u grlu" ||
+				text == "Glavobolja" ||
+				text == "Kijanje" ||
+				text == "Kasalj"
+			) from $symptoms,
+            init(Salience $sal = new Salience(5);),
+            action($sal.increaseSatisfiedSymptoms();),
+            result($sal)
+            )
+	then
+		modify($ex) {setDisease($d);}
+		System.out.println("Prehlada: Zadovoljenih simptoma " + $sdc.getSymptomsSatisfied() + ".");
+end
+
+rule "Groznica"
+	no-loop
+	lock-on-active true
+	salience ($sdc.getSymptomsSatisfied()/$sdc.getSymptomsNumber()*100)
+	when
+		$d : Disease( disease == "Groznica" )
+		$ex : Examination(disease == null , $symptoms: symptoms)
+		$sdc : Salience( $s : symptomsSatisfied >=4 ) from accumulate(
+			$symptom : Symptom (
+				text == "Curenje iz nosa" ||
+				text == "Bol u grlu" ||
+				text == "Glavobolja" ||
+				text == "Kijanje" ||
+				text == "Kasalj" ||
+				text == "Drhtavica"||
+				text == "Temperatura veca od 38"
+			) from $symptoms,
+            init(Salience $sal = new Salience(7);),
+            action($sal.increaseSatisfiedSymptoms();),
+            result($sal)
+		)
+	then
+		modify($ex) {setDisease($d);}
+        System.out.println("Groznica: Zadovoljenih simptoma " + $sdc.getSymptomsSatisfied() + ".");
+end
+
+
+rule "Upala krajnika"
+	no-loop
+	lock-on-active true
+	salience ($sdc.getSymptomsSatisfied()/$sdc.getSymptomsNumber()*100)
+	when
+		$d : Disease( disease == "Upala krajnika" )
+		$ex : Examination(disease == null , $symptoms: symptoms)
+		$sdc : Salience( $s : symptomsSatisfied >=4 ) from accumulate(
+			$symptom : Symptom (
+				text == "Bol u grlu" ||
+				text == "Glavobolja" ||
+				text == "Drhtavica" ||
+				text == "Temperatura od 40 do 41" ||
+				text == "Bol koji se siri do usiju" ||
+				text == "Gubitak apetita" ||
+				text == "Umor" ||
+				text == "Zuti sekret iz nosa"
+			) from $symptoms,
+            init(Salience $sal = new Salience(8);),
+            action($sal.increaseSatisfiedSymptoms();),
+            result($sal)
+		)
+	then
+		modify($ex) {setDisease($d);}
+        System.out.println("Upala krajnika: Zadovoljenih simptoma " + $sdc.getSymptomsSatisfied() + ".");
+end
+
+rule "Sinusna infekcija"
+	no-loop
+	lock-on-active true
+	salience ($sdc.getSymptomsSatisfied()/$sdc.getSymptomsNumber()*100)
+	when
+		$d : Disease( disease == "Sinusna infekcija" )
+		$ex : Examination(disease == null , $symptoms: symptoms)
+		$sdc : Salience( $s : symptomsSatisfied >=3 ) from accumulate(
+			$symptom : Symptom (
+				text == "Oticanje oko ociju" ||
+				text == "Glavobolja" ||
+				text == "Zuti sekret iz nosa" ||
+				text == "Bol u grlu" ||
+				text == "Temperatura veca od 38" ||
+				text == "Kasalj"
+			) from $symptoms,
+            init(Salience $sal = new Salience(8);),
+            action($sal.increaseSatisfiedSymptoms();),
+            result($sal)
+		)
+	then
+		modify($ex) {setDisease($d);}
+        System.out.println("Sinusna infekcija: Zadovoljenih simptoma " + $sdc.getSymptomsSatisfied() + ".");
+end
+
+rule "Dijabetes"
+	no-loop
+	lock-on-active true
+	salience 100
+	when
+		$d : Disease( disease == "Dijabetes" )
+		$ex : Examination(disease == null , $symptoms: symptoms)
+		$sdc : Salience( $s : allSymptomsSatisfied == true ) from accumulate(
+			$symptom : Symptom (
+				text == "Cesto uriniranje"	||
+                text == "Gubitak tjelesne tezine" 	||
+                text == "Zamor"	 ||
+                text == "Mucnina i povracanje"
+			) from $symptoms,
+            init(Salience $sal = new Salience(4);),
+            action($sal.increaseSatisfiedSymptoms();),
+            result($sal)
+		)
+	then
+		modify($ex) {setDisease($d);}
+        System.out.println("Dijabetes: Svi simptomi zadovoljeni.");
+end
+

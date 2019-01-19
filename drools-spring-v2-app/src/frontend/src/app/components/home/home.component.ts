@@ -25,7 +25,6 @@ export class HomeComponent
     this.authenticationService.authenticateUser(this.usr, this.password).subscribe(
       data => {
         localStorage.setItem("loggedUser", JSON.stringify(data));
-        console.log(data);
         this.role = data.role;
       },
       error => this.badInput(),

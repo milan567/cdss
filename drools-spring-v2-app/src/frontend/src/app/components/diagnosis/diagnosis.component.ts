@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import {  ActivatedRoute,Params } from '@angular/router';
 import {Observable, Subscription} from "rxjs";
 import {NgxPaginationModule} from 'ngx-pagination';
-import {Disease, Symptom} from "../../models";
+import {Disease, Patient, Symptom} from '../../models';
 import {SymptomService} from "../../services/symptom.service";
 import {DiagnoseService} from "../../services/diagnose.service";
+import {PatientService} from '../../services/patient.service';
 
 @Component({
   moduleId: module.id,
   selector: 'diagnosis',
   templateUrl: './diagnosis.component.html',
   styleUrls: ['./diagnosis.component.css'],
-  providers: [DiagnoseService,SymptomService]
+  providers: [DiagnoseService,SymptomService,PatientService]
 
 })
 
@@ -23,10 +24,27 @@ export class DiagnosisComponent{
   public symptoms:Symptom[];
   public option:string = "";
   public diseaseSymptoms: Symptom[] = [];
-  public patient: string ="";
   public disease: Disease;
+  public currentPatient: Patient;
+  public id:string;
 
-  constructor(private symptomService: SymptomService, private diagnoseService:DiagnoseService ,private router: Router) {
+
+  constructor(private symptomService: SymptomService, private diagnoseService:DiagnoseService,
+              private patientService: PatientService ,private router:  ActivatedRoute) {}
+
+
+  ngOnInit() {
+    this.router.params.subscribe(
+      params => {
+        this.id = params['id'];
+      }
+    )
+
+    this.patientService.getPatient(this.id).subscribe(
+      data => {
+        this.currentPatient = data;
+      }
+    );
     this.symptomService.getAllSymptoms().subscribe(
       data => {
         this.symptoms = data;
@@ -62,12 +80,11 @@ export class DiagnosisComponent{
 
 
   public diagnose() {
-    console.log("A");
-    if (this.patient == "" || this.diseaseSymptoms.length == 0) {
+    if (this.currentPatient.id == "" || this.diseaseSymptoms.length == 0) {
       alert("Sva polja moraju biti popunjena");
     }
     else {
-      this.diagnoseService.diagnose(this.patient,this.diseaseSymptoms).subscribe(
+      this.diagnoseService.diagnose(this.currentPatient.id,this.diseaseSymptoms).subscribe(
         result => {
           console.log(result);
         },

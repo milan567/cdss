@@ -1,9 +1,12 @@
 package drools.controller;
 
 
+import drools.model.Authority;
+import drools.model.Disease;
 import drools.model.User;
 import drools.model.dto.LoginRequestDTO;
 import drools.model.dto.LoginResponseDTO;
+import drools.service.DiseaseService;
 import drools.service.UserService;
 import org.kie.api.KieBase;
 import org.kie.api.KieBaseConfiguration;
@@ -20,6 +23,8 @@ import org.springframework.http.ResponseEntity;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 public class UserController
@@ -27,6 +32,8 @@ public class UserController
     @Autowired
     UserService userService;
 
+    @Autowired
+    DiseaseService diseaseService;
 
     @Autowired
     private KieContainer kieContainer;
@@ -43,13 +50,20 @@ public class UserController
         try {
             User user = this.userService.validateUser(loginDTO);
             if (user != null) {
-                request.getSession(true).setAttribute("currentUser", user);
-                KieServices ks = KieServices.Factory.get();
-                KieBaseConfiguration kbconf = ks.newKieBaseConfiguration();
-                kbconf.setOption(EventProcessingOption.STREAM);
-                KieBase kbase = kieContainer.newKieBase(kbconf);
-                KieSession kieSession = kbase.newKieSession();
-                request.getSession().setAttribute("kieSession", kieSession);
+                if (user.getUserAuthority() == Authority.DOCTOR) {
+                    request.getSession(true).setAttribute("currentUser", user);
+                    KieServices ks = KieServices.Factory.get();
+                    KieBaseConfiguration kbconf = ks.newKieBaseConfiguration();
+                    kbconf.setOption(EventProcessingOption.STREAM);
+                    KieBase kbase = kieContainer.newKieBase(kbconf);
+                    KieSession kieSession = kbase.newKieSession();
+                    request.getSession().setAttribute("kieSession", kieSession);
+
+               //     List<Disease> diseases = diseaseService.getAll();
+              //      for (int i = 0; i <diseases.size(); i++) {
+               //         kieSession.insert(diseases.get(i));
+               //     }
+                }
             }
             System.out.println("--------------");
             System.out.println(request.getSession().getAttribute("currentUser"));

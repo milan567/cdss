@@ -28,6 +28,15 @@ export class Doctor
   ) {}
 }
 
+export class Patient
+{
+  constructor(
+    public id:string = "",
+    public patientName:string = "",
+    public patientSurame:string = "",
+  ) {}
+}
+
 export class Link
 {
   constructor( public text: string,

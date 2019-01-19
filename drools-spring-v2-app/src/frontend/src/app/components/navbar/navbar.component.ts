@@ -49,12 +49,8 @@ export class NavbarComponent implements OnInit
 
   presetUser()
   {
-    this.addLink( {text: "Bolesti", routerLink: "/sveBolesti"});
-    this.addLink({text: "Dijagnoza", routerLink: "/dijagnoza"});
-    this.addLink({text: "Monitoring pacijenata", routerLink: "/allLogs"});
-    this.addLink({text: "Izvjestaj o hronicnim bolesnicima", routerLink: "/allLogs"});
-    this.addLink({text: "Izvjestaj o zavisnicima", routerLink: "/allLogs"});
-    this.addLink({text: "Logout", routerLink:"/" });
+    this.addLink( {text: "Pacijenti", routerLink: "/sviPacijenti"});
+    this.addLink({text: "Bolesti", routerLink: "/dijagnoza"});
     //this._router.navigate(['/adminPage']);
   }
 

@@ -1,6 +1,7 @@
 package drools.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Patient {
@@ -16,6 +17,16 @@ public class Patient {
     @Column(name = "patient_surname")
     private String patientSurame;
 
+    @ManyToMany
+    private List<Examination> examinations;
+
+    public List<Examination> getExaminations() {
+        return examinations;
+    }
+
+    public void setExaminations(List<Examination> examinations) {
+        this.examinations = examinations;
+    }
 
     @Override
     public String toString() {
@@ -37,7 +48,6 @@ public class Patient {
 
     public Integer getId() {
         return id;
-
     }
 
     public void setId(Integer id) {
