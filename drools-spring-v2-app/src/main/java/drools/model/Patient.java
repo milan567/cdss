@@ -17,7 +17,7 @@ public class Patient {
     @Column(name = "patient_surname")
     private String patientSurame;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Examination> examinations;
 
     public List<Examination> getExaminations() {

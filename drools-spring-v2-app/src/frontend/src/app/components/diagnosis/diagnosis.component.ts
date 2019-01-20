@@ -115,4 +115,20 @@ export class DiagnosisComponent{
       )
     }
   }
+
+  public potentialDiseases(){
+    if (this.currentPatient.id == "" || this.diseaseSymptoms.length == 0) {
+      alert("Sva polja moraju biti popunjena");
+    }
+    else {
+      this.diagnoseService.potentialDiseases(this.diseaseSymptoms).subscribe(
+        result => {
+          console.log(result);
+        },
+        error => {
+          console.log("ERROR");
+        }
+      );
+    }
+  }
 }

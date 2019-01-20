@@ -17,11 +17,8 @@ public class Disease {
     @Column(name = "disease_group")
     private Integer group;
 
-    @ManyToMany
-    private List<Symptom> specificSymptoms;
-
-    @ManyToMany
-    private List<Symptom> nonSpecificSymptoms;
+    @ManyToMany(fetch =FetchType.EAGER)
+    private List<Symptom> symptoms;
 
     @Transient
     private Long matchingSymptoms;
@@ -43,11 +40,10 @@ public class Disease {
         return group;
     }
 
-    public Disease(String disease, Integer group, List<Symptom> specificSymptoms, List<Symptom> nonSpecificSymptoms) {
+    public Disease(String disease, Integer group, List<Symptom> symptoms) {
         this.disease = disease;
         this.group = group;
-        this.specificSymptoms = specificSymptoms;
-        this.nonSpecificSymptoms = nonSpecificSymptoms;
+        this.symptoms = symptoms;
     }
 
     public void setId(Integer id) {
@@ -70,35 +66,24 @@ public class Disease {
     public Disease(String disease, Integer group) {
         this.disease = disease;
         this.group = group;
-        this.nonSpecificSymptoms = new ArrayList<>();
-        this.specificSymptoms = new ArrayList<>();
+        this.symptoms = new ArrayList<>();
     }
 
     public Disease() {
-        nonSpecificSymptoms = new ArrayList<>();
-        specificSymptoms = new ArrayList<>();
+        this.symptoms = new ArrayList<>();
     }
 
-    public Disease(String disease, List<Symptom> specificSymptoms, List<Symptom> nonSpecificSymptoms) {
+    public Disease(String disease, List<Symptom> symptoms) {
         this.disease = disease;
-        this.specificSymptoms = specificSymptoms;
-        this.nonSpecificSymptoms = nonSpecificSymptoms;
+        this.symptoms = symptoms;
     }
 
-    public List<Symptom> getSpecificSymptoms() {
-        return specificSymptoms;
+    public List<Symptom> getSymptoms() {
+        return this.symptoms;
     }
 
-    public void setSpecificSymptoms(List<Symptom> specificSymptoms) {
-        this.specificSymptoms = specificSymptoms;
-    }
-
-    public List<Symptom> getNonSpecificSymptoms() {
-        return nonSpecificSymptoms;
-    }
-
-    public void setNonSpecificSymptoms(List<Symptom> nonSpecificSymptoms) {
-        this.nonSpecificSymptoms = nonSpecificSymptoms;
+    public void setSymptoms(List<Symptom> symptoms) {
+        this.symptoms = symptoms;
     }
 
     @Override
@@ -107,8 +92,7 @@ public class Disease {
                 "id=" + id +
                 ", disease='" + disease + '\'' +
                 ", group=" + group +
-                ", specificSymptoms=" + specificSymptoms +
-                ", nonSpecificSymptoms=" + nonSpecificSymptoms +
+                ", symptoms=" + symptoms +
                 '}';
     }
 }

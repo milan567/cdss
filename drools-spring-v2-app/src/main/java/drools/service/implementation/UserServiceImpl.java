@@ -55,4 +55,9 @@ public class UserServiceImpl implements UserService {
         this.userRepository.deleteAll();
     }
 
+    @Override
+    public User findDoctorByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
 }

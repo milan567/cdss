@@ -1,5 +1,6 @@
 package drools.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
@@ -15,12 +16,11 @@ public class Medication {
     @Column(name = "text")
     private String text;
 
-    @Column(name = "medication_type")
-    private String medicationType;
-
     @ManyToMany
-    private List<Ingredient> ingredient;
+    private List<Ingredient> ingredients;
 
+    @Column(name= "medicationType")
+    private MedicationType medicationType;
 
     @Override
     public String toString() {
@@ -28,18 +28,33 @@ public class Medication {
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", type='" + medicationType + '\'' +
-                ", ingredient=" + ingredient +
+                ", ingredient=" + ingredients +
                 '}';
     }
 
     public Medication() {
     }
 
-    public Medication(String text, String type, List<Ingredient> ingredient) {
+    public Medication(String text, MedicationType type, List<Ingredient> ingredient) {
 
         this.text = text;
         this.medicationType = type;
-        this.ingredient = ingredient;
+        this.ingredients = ingredient;
+    }
+
+    public Medication(String text, MedicationType type) {
+
+        this.text = text;
+        this.medicationType = type;
+        this.ingredients = new ArrayList<>();
+    }
+
+    public MedicationType getMedicationType() {
+        return medicationType;
+    }
+
+    public void setMedicationType(MedicationType medicationType) {
+        this.medicationType = medicationType;
     }
 
     public Integer getId() {
@@ -59,19 +74,11 @@ public class Medication {
         this.text = text;
     }
 
-    public String getType() {
-        return medicationType;
+    public List<Ingredient> getIngredients() {
+        return ingredients;
     }
 
-    public void setType(String type) {
-        this.medicationType = type;
-    }
-
-    public List<Ingredient> getIngredient() {
-        return ingredient;
-    }
-
-    public void setIngredient(List<Ingredient> ingredient) {
-        this.ingredient = ingredient;
+    public void setIngredients(List<Ingredient> ingredient) {
+        this.ingredients = ingredient;
     }
 }

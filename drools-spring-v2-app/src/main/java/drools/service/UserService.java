@@ -18,4 +18,6 @@ public interface UserService {
     User validateUser(LoginRequestDTO user);
 
     void deleteAll();
+
+    User findDoctorByUsername(String username);
 }

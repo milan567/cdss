@@ -30,5 +30,9 @@ public class PatientServiceImpl implements PatientService {
         return patientRepository.getOne(id);
     }
 
+    @Override
+    public Patient findPatientBySurname(String surname) {
+        return patientRepository.findOneByPatientSurame(surname);
+    }
 
 }

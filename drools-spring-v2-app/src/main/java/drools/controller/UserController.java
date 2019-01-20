@@ -59,10 +59,10 @@ public class UserController
                     KieSession kieSession = kbase.newKieSession();
                     request.getSession().setAttribute("kieSession", kieSession);
 
-               //     List<Disease> diseases = diseaseService.getAll();
-              //      for (int i = 0; i <diseases.size(); i++) {
-               //         kieSession.insert(diseases.get(i));
-               //     }
+                    List<Disease> diseases = diseaseService.getAll();
+                    for (int i = 0; i <diseases.size(); i++) {
+                        kieSession.insert(diseases.get(i));
+                    }
                 }
             }
             System.out.println("--------------");

@@ -1,0 +1,16 @@
+package rules;
+
+import drools.model.*;
+import java.util.*;
+
+query "Potencijalne bolesti sortirane po simptomima" (List symptomList)
+		disease : Disease($diseaseSymptoms : symptoms)
+		$symptoms : List() from accumulate (
+				$sym:Symptom($sText:text) from $diseaseSymptoms,
+				collectList($sText)
+				)
+		sum : Number(intValue>=1) from accumulate(
+          $symptom: Symptom(text memberOf $symptoms) from symptomList,
+          count($symptom)
+        )
+end

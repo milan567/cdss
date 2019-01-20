@@ -22,4 +22,9 @@ export class DiagnoseService {
     return this.http.post<Disease>("/api/doktor/dijagnozaPacijenta", param,{headers: this.headers, observe: 'response'});
 
   }
+
+
+  potentialDiseases(symptoms:Symptom[]){
+    return this.http.post<Disease[]>("/api/doktor/potencijalneBolesti", symptoms,{headers: this.headers, observe: 'response'});
+  }
 }

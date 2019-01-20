@@ -1,7 +1,7 @@
 package rules;
 
 import drools.model.*;
-import java.util.List;
+import java.util.*;
 
 agenda-group "diseases-group"
 
@@ -88,8 +88,10 @@ rule "Sinusna infekcija"
 	lock-on-active true
 	salience ($sdc.getSymptomsSatisfied()/$sdc.getSymptomsNumber()*100)
 	when
+	    $dc : DateChecker()
 		$d : Disease( disease == "Sinusna infekcija" )
 		$ex : Examination(disease == null , $symptoms: symptoms)
+		$patient: Patient($examinations : examinations)
 		$sdc : Salience( $s : symptomsSatisfied >=3 ) from accumulate(
 			$symptom : Symptom (
 				text == "Oticanje oko ociju" ||
@@ -103,6 +105,14 @@ rule "Sinusna infekcija"
             action($sal.increaseSatisfiedSymptoms();),
             result($sal)
 		)
+
+		Number(intValue >= 1) from accumulate (
+        $oldDiagnose: Examination( disease.disease=="Prehlada" || disease.disease=="Groznica", $dc.last60Days()<date ) from $examinations,
+        init(int count = 0;),
+        action(count++;
+        ),
+        result(count)
+        )
 	then
 		modify($ex) {setDisease($d);}
         System.out.println("Sinusna infekcija: Zadovoljenih simptoma " + $sdc.getSymptomsSatisfied() + ".");
@@ -131,3 +141,148 @@ rule "Dijabetes"
         System.out.println("Dijabetes: Svi simptomi zadovoljeni.");
 end
 
+
+rule "Hipertenzija"
+	no-loop
+	lock-on-active
+	salience 20
+	when
+		$dc : DateChecker()
+		$d: Disease( disease == "Hipertenzija")
+		$patient: Patient($examinations : examinations)
+		$ex : Examination(disease == null , $symptoms: symptoms)
+		$oldSymptoms: List() from accumulate(
+			Examination($dc.last6Months()<date, $currSymptoms: symptoms) from $examinations,
+			init(List symptomList = new ArrayList<>();),
+			action(symptomList.addAll($currSymptoms);)
+			result(symptomList)
+		)
+
+
+		$symptomNum: Number(intValue >= 10) from accumulate(
+			Symptom(text == "Visok krvni pritisak") from $oldSymptoms,
+			init(int count = 0;),
+			action(count++;),
+			result(count)
+		)
+
+	then
+		modify($ex) {setDisease($d);}
+		System.out.println("Hipertenzija: Svi simptomi zadovoljeni.");
+end
+
+
+rule "Hronicna bubrezna bolest"
+	no-loop
+	lock-on-active
+	salience 20
+	when
+		$dc : DateChecker()
+		$d: Disease( disease == "Hronicna bubrezna bolest")
+		$patient: Patient($examinations : examinations)
+		$hypertension: Disease(disease == "Hipertenzija")
+		$diabetes: Disease(disease == "Dijabetes")
+		$ex : Examination(disease == null , $symptoms: symptoms)
+		$sdc : Salience( $s : symptomsSatisfied >=2 ) from accumulate(
+            $symptom : Symptom (
+            	text == "Zamor"	||
+                text == "Nocturia" 	||
+                text == "Otoci nogu i zglobova"	 ||
+                text == "Gusenje" ||
+                text == "Bol u grudima"
+            ) from $symptoms,
+            init(Salience $sal = new Salience(4);),
+            action($sal.increaseSatisfiedSymptoms();),
+            result($sal)
+            )
+            and
+            (
+            Number(intValue >= 1) from accumulate(
+            Examination($dc.last6Months()>date, disease.disease == $hypertension.disease) from $examinations,
+            init(int count = 0;),
+            action(count++;),
+            result(count)
+            )
+            or
+            Number(intValue >= 1) from accumulate(
+            Examination(disease.disease == $diabetes.disease) from $examinations,
+            init(int count = 0;),
+            action(count++;),
+            result(count)
+            )
+            )
+	then
+		modify($ex) {setDisease($d);}
+		System.out.println("Hronicna bubrezna bolest: Svi simptomi zadovoljeni.");
+end
+
+
+rule "Akutna bubrezna povreda"
+	no-loop
+	lock-on-active
+	salience 20
+	when
+		$dc : DateChecker()
+		$d: Disease( disease == "Akutna bubrezna povreda")
+		$patient: Patient($examinations : examinations)
+		$ex : Examination(disease == null , $symptoms: symptoms)
+		$sdc : Salience( $s : symptomsSatisfied >=2 ) from accumulate(
+            $symptom : Symptom (
+            	text == "Zamor"	||
+                text == "Gusenje" 	||
+                text == "Otoci nogu i zglobova"	 ||
+                text == "Dijareja"
+            ) from $symptoms,
+            init(Salience $sal = new Salience(4);),
+            action($sal.increaseSatisfiedSymptoms();),
+            result($sal)
+            )
+            and
+            (
+             (
+              Number(intValue >= 1) from accumulate(
+                  Symptom(text == "Oporavak od operacije") from $symptoms,
+                  init(int count = 0;),
+                  action(count++;),
+                  reverse(count--;),
+                  result(count)
+                  )
+              )
+              or (
+              $past14DaysSymptoms: List() from accumulate(
+                  Examination($dc.last14Days()<date, $pasDis: disease != null) from $examinations,
+            	  init(List pasSymps = new ArrayList<>(); ),
+            	  action(pasSymps.addAll($pasDis.getSymptoms());),
+            	  result(pasSymps)
+              )
+              and
+              Number(intValue >= 1) from accumulate(
+                  Symptom(text == "Temperatura od 40 do 41"
+                         || text == "Temperatura veca od 38"
+                  ) from $past14DaysSymptoms,
+            	  init(int count = 0;),
+            	  action(count++;),
+            	  result(count)
+              )
+              )
+              or
+              (
+               $past: List() from accumulate(
+                   Examination($dc.last21Days()<date, disease != null, $pastMedications: medications) from $examinations,
+                   init(List $pastMedications = new ArrayList<>();),
+                   action($pastMedications.addAll($pastMedications);),
+                   result($pastMedications)
+                        	)
+                   and
+                   Number(intValue >= 1) from accumulate(
+                   Medication(medicationType==MedicationType.ANTIBIOTIC) from $past,
+                   init(int count = 0;),
+                   action(count++;),
+                   result(count)
+               )
+               )
+            )
+	then
+		modify($ex) {setDisease($d);}
+		System.out.println("\"Akutna bubrezna povreda: Svi simptomi zadovoljeni.");
+end
