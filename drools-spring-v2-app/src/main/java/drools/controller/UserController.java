@@ -74,4 +74,52 @@ public class UserController
         }
     }
 
+
+    @RequestMapping(value = "/api/logout", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        System.out.println(request.getSession().getAttribute("currentUser"));
+        try {
+            request.getSession().removeAttribute("currentUser");
+            request.getSession().removeAttribute("kieSession");
+            System.out.println("--------------");
+            System.out.println("--------------");
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("Invalid login", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/api/admin/sviDoktori", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteDoctor() {
+        try {
+            List<User> doctors = userService.getAllDoctors();
+            return new ResponseEntity<>(doctors, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("Invalid login", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/api/admin/{id}", method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteDoctor(@PathVariable("id") Integer id) {
+        try {
+            List<User> doctors = userService.deleteDoctor(id);
+            return new ResponseEntity<>(doctors, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("Invalid login", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/api/doctor/{id}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getDoctor(@PathVariable("id") Integer id) {
+        try {
+            User doctor = userService.getUserById(id);
+            return new ResponseEntity<>(doctor, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("Invalid login", HttpStatus.BAD_REQUEST);
+        }
+    }
 }

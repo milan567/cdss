@@ -1,0 +1,27 @@
+<div *ngIf="doctor" class="register">
+  <h3>Izmjena doktora</h3>
+
+  <div class="form-group">
+    <label for="rep">Unesite ime doktora:</label>
+    <input type="text" class="form-control" id="rep" placeholder="Ime" name="usr" [(ngModel)]="doctor.doctorName" >
+  </div>
+
+  <div class="form-group">
+    <label for="rep">Unesite prezime doktora:</label>
+    <input type="text" class="form-control" id="rep1" placeholder="Prezime" name="usr" [(ngModel)]="doctor.surname" >
+  </div>
+
+  <div class="form-group">
+    <label for="rep">Unesite korisnicko ime doktora:</label>
+    <input type="text" class="form-control" id="rep2" placeholder="Korisnicko ime" name="usr" [(ngModel)]="doctor.username" >
+  </div>
+
+
+  <div class="form-group">
+    <label for="rep">Unesite specijalnost doktora:</label>
+    <input type="text" class="form-control" id="rep3" placeholder="Specijalnost" name="usr" [(ngModel)]="doctor.specialist" >
+  </div>
+
+    <button type="submit" (click)="saveDoctor()"  class="btn btn-primary" id="addSymptomButton">Potvrdi</button>
+
+</div>

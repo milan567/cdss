@@ -12,6 +12,7 @@ import drools.model.dto.PotentialDiseasesResponseDTO;
 import drools.service.DiseaseService;
 import drools.service.ExaminationService;
 import drools.service.MedicationService;
+import drools.service.UserService;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,9 @@ public class DoctorController {
 
     @Autowired
     ExaminationService examinationService;
+
+    @Autowired
+    UserService userService;
 
     @RequestMapping(value = "api/doktor/dijagnozaPacijenta", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -91,5 +95,16 @@ public class DoctorController {
         }
     }
 
+
+    @RequestMapping(value = "api/doktor", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> saveDoctor(@RequestBody User doctor,HttpServletRequest request) {
+        try {
+            User doc = userService.editDoctor(doctor);
+            return new ResponseEntity<>(doc, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("Invalid request", HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

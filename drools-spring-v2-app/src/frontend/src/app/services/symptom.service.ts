@@ -23,7 +23,15 @@ export class SymptomService{
   addSymptom(symptom:Symptom){
     let param = JSON.stringify(symptom);
     console.log(param);
-    return this.http.post<Symptom[]>("api/simptom/noviSimptom", param,{headers: this.headers, observe: 'response'});
+    return this.http.post<Symptom[]>("/api/simptom/noviSimptom", param,{headers: this.headers, observe: 'response'});
+
+  }
+
+
+  addNewSymptom(symptom:Symptom){
+    let param = JSON.stringify(symptom);
+    console.log(param);
+    return this.http.post<Symptom[]>("/api/simptom/dodajNoviSimptom", param,{headers: this.headers, observe: 'response'});
 
   }
 }

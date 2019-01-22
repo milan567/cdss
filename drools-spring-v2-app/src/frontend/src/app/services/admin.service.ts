@@ -27,11 +27,22 @@ export class AdminService
   }
 
   getAllDoctors() {
-    return this.http.get<Doctor[]>("http://localhost:8080/admin/sviDoktori");
+    return this.http.get<Doctor[]>("api/admin/sviDoktori");
   }
 
   deleteDoctor(doctor:number){
-    return this.http.delete<Doctor[]>("http://localhost:8080/admin/" + doctor);
+    return this.http.delete<Doctor[]>("api/admin/" + doctor);
+  }
+
+  getDoctor(id:string){
+    return this.http.get<Doctor>("api/doctor/" + id);
+  }
+
+  saveDoctor(doctor:Doctor){
+    let param = JSON.stringify(doctor);
+    console.log(param);
+    return this.http.post<Disease>("api/doktor", param,{headers: this.headers, observe: 'response'});
+
   }
 
 }

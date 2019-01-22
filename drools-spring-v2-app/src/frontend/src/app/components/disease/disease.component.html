@@ -5,14 +5,15 @@
       <tr>
         <th>ID</th>
         <th>Opis simptoma</th>
-        <th>Specificni simptom</th>
+        <th>Tip simptoma</th>
       </tr>
       </thead>
       <tbody *ngIf="disease">
       <tr *ngFor="let item of disease.symptoms | paginate: {itemsPerPage:5, currentPage: p}">
         <td><fieldset disabled=""><input type="text" [(ngModel)]="item.id" class="form-control" /></fieldset></td>
         <td><fieldset disabled=""><input type="text" [(ngModel)]="item.text" class="form-control" /></fieldset></td>
-        <td><fieldset disabled="">DA</fieldset></td>
+        <td *ngIf="item.symptomType=='SPECIFIC'"><fieldset disabled="">Specificni</fieldset></td>
+        <td *ngIf="item.symptomType=='NONSPECIFIC'"><fieldset disabled="">Opsti</fieldset></td>
         <td><button type="submit" (click)="deleteDisease(item)" class="btn btn-primary" id="diseaseButton">
           Obrisi
         </button></td>

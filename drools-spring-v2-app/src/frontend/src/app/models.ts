@@ -21,7 +21,7 @@ export class Doctor
 {
   constructor(
     public id:string,
-    public name:string,
+    public doctorName:string,
     public surname:string,
     public username:string,
     public specialist:string,
@@ -34,6 +34,7 @@ export class Patient
     public id:string = "",
     public patientName:string = "",
     public patientSurame:string = "",
+    public examinations: Examination[] = [],
   ) {}
 }
 
@@ -44,7 +45,11 @@ export class Link
   ){}
 }
 
-
+export class Examination {
+  constructor( public date: string,
+               public disease: Disease,
+  ){}
+}
 
 export class Address
 {

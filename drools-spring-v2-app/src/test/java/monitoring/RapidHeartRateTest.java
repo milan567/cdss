@@ -28,7 +28,7 @@ public class RapidHeartRateTest {
 
     @Test
     @SuppressWarnings("Duplicates")
-    public void testRapidHeartRate() {
+    public void testRapidHeartRate(){
         KieServices kieServices = KieServices.Factory.get();
         KieContainer kContainer = kieServices
                 .newKieContainer(kieServices.newReleaseId("drools-spring-v2", "drools-spring-v2-kjar", "0.0.1-SNAPSHOT"));

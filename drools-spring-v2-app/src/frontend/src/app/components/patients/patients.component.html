@@ -21,7 +21,7 @@
       <td>{{patient.patientName}}</td>
       <td>{{patient.patientSurame}}</td>
       <td><button  type="submit"  class="btn btn-primary"  (click)="getDiagnose(patient.id)">Dijagnoza</button>
-          <button  type="submit"  class="btn btn-primary" >Profil</button></td>
+          <button  type="submit"  class="btn btn-primary" (click)="showPatient(patient.id)" >Profil</button></td>
     </tr>
     </tbody>
     <pagination-controls (pageChange)="p = $event"></pagination-controls>

@@ -10,7 +10,7 @@ rule "Prehlada"
 	lock-on-active true
 	salience ($sdc.getSymptomsSatisfied()/$sdc.getSymptomsNumber()*100)
 	when
-		$d : Disease( disease == "Prehlada" )
+		$d : Disease( disease == "Prehlada"  )
 		$ex : Examination(disease == null , $symptoms: symptoms)
 		$sdc : Salience( $s : symptomsSatisfied >=4 ) from accumulate(
 			$symptom : Symptom (

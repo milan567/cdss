@@ -8,7 +8,7 @@ import {PatientService} from '../../services/patient.service';
   selector: 'patients',
   templateUrl: './patients.component.html',
   styleUrls: ['./patients.component.css'],
-  providers: []
+  providers: [PatientService]
 
 })
 
@@ -27,4 +27,7 @@ export class PatientsComponent{
     this.router.navigateByUrl("/dijagnoza/"+id);
   };
 
+  showPatient(id:string){
+    this.router.navigateByUrl('pacijent/'+ id);
+  }
 }

@@ -86,8 +86,6 @@ export class DiagnosisComponent{
           this.diseaseSymptoms.push(this.symptoms[i]);
         }
       }
-
-
     }
   }
 

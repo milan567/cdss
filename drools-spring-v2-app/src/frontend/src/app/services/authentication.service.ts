@@ -37,4 +37,12 @@ export class AuthenticationService
     return this.OnChangeRole.asObservable();
   }
 
+  logOut()
+  {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post("api/logout", { headers : headers })
+      .map(res => res.json());
+  }
+
 }

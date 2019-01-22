@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Router } from '@angular/router';
 import {Observable, Subscription} from "rxjs";
 import {NgxPaginationModule} from 'ngx-pagination';
 import {Disease, Symptom} from "../../models";
@@ -9,13 +9,13 @@ import {DiseaseService} from "../../services/disease.service";
 @Component({
   moduleId: module.id,
   selector: 'disease',
-  templateUrl: './editDisease.component.html',
-  styleUrls: ['./editDisease.component.css'],
+  templateUrl: './addDisease.component.html',
+  styleUrls: ['./addDisease.component.css'],
   providers: [DiseaseService,SymptomService]
 
 })
 
-export class EditDiseaseComponent {
+export class AddDiseaseComponent {
 
   public creatingSymptom:boolean;
   public text: string = "";
@@ -25,23 +25,9 @@ export class EditDiseaseComponent {
   public diseaseSymptoms: Symptom[] = [];
   public name: string ="";
   public disease: Disease;
-  public id: string = "";
-  public symptomOption: string;
-  postsSubscription:Subscription;
+  public symptomOption: string = "";
 
-  constructor(private symptomService: SymptomService, private diseaseService:DiseaseService ,private router: Router,
-              private activatedRoute:ActivatedRoute) {
-    this.activatedRoute.params.subscribe( params => {
-      let id = params['id'];
-      this.postsSubscription = this.diseaseService.getDisease(id).subscribe(
-        data => {
-          this.id = id;
-          this.disease = data;
-          this.name = this.disease.disease;
-          this.diseaseSymptoms = this.disease.symptoms
-          this.option = this.disease.group.toString();
-        });
-    } )
+  constructor(private symptomService: SymptomService, private diseaseService:DiseaseService ,private router: Router) {
     this.symptomService.getAllSymptoms().subscribe(
       data => {
         this.symptoms = data;
@@ -56,10 +42,9 @@ export class EditDiseaseComponent {
           this.diseaseSymptoms.push(this.symptoms[i]);
         }
       }
-
-
     }
   }
+
 
   public removeSymptom(id:number){
     for (let i = 0; i < this.diseaseSymptoms.length; i++){
@@ -69,17 +54,19 @@ export class EditDiseaseComponent {
     }
   }
 
+
   public createNewSymptom() {
     this.creatingSymptom = !this.creatingSymptom;
   }
 
-  public editDisease() {
+
+  public addDisease() {
     if (this.name == "" || this.diseaseSymptoms.length == 0) {
       alert("Sva polja moraju biti popunjena");
     }
     else {
-      this.disease = new Disease(this.id, this.name, Number(this.option), this.diseaseSymptoms);
-      this.diseaseService.editDisease(this.disease).subscribe(
+      this.disease = new Disease("", this.name, 1, this.diseaseSymptoms);
+      this.diseaseService.addDisease(this.disease).subscribe(
         result => {
           this.router.navigateByUrl("/sveBolesti");
         },
@@ -89,6 +76,8 @@ export class EditDiseaseComponent {
       )
     }
   }
+
+
 
   public addNewSymptom()
   {

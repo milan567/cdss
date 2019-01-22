@@ -6,6 +6,8 @@ package drools.service;
 import drools.model.User;
 import drools.model.dto.LoginRequestDTO;
 
+import java.util.List;
+
 
 public interface UserService {
     User save(User user);
@@ -20,4 +22,10 @@ public interface UserService {
     void deleteAll();
 
     User findDoctorByUsername(String username);
+
+    List<User> getAllDoctors();
+
+    List<User> deleteDoctor(Integer id);
+
+    User editDoctor(User doctor);
 }

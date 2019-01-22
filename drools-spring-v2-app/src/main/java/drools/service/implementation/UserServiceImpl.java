@@ -1,5 +1,6 @@
 package drools.service.implementation;
 
+import drools.model.Authority;
 import drools.model.User;
 import drools.model.dto.LoginRequestDTO;
 import drools.repository.UserRepository;
@@ -7,6 +8,8 @@ import drools.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import drools.service.UserService;
+
+import java.util.List;
 
 
 @Service
@@ -58,6 +61,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findDoctorByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public List<User> getAllDoctors() {
+
+        return userRepository.findByUserAuthority(Authority.DOCTOR);
+    }
+
+    @Override
+    public List<User> deleteDoctor(Integer id) {
+        userRepository.deleteById(id);
+        return userRepository.findByUserAuthority(Authority.DOCTOR);
+    }
+
+    @Override
+    public User editDoctor(User doctor) {
+        User u = userRepository.getOne(doctor.getId());
+        if (u == null){
+            return null;
+        }
+        u.setUsername(doctor.getUsername());
+        u.setDoctorName(doctor.getDoctorName());
+        u.setSpecialist(doctor.getSpecialist());
+        u.setSurname(doctor.getSurname());
+        return userRepository.save(u);
     }
 
 }

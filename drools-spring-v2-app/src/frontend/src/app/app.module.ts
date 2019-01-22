@@ -26,6 +26,11 @@ import {EditDiseaseComponent} from './components/editDisease/editDisease.compone
 import {MedicationService} from './services/medication.service';
 import {DiseaseService} from './services/disease.service';
 import {PatientsReportComponent} from './components/patientsReport/patientsReport.component';
+import {PatientComponent} from './components/patient/patient.component';
+import {AddDiseaseComponent} from './components/addDisease/addDisease.component';
+import {DoctorsComponent} from './components/doctors/doctors.component';
+import {EditDoctorComponent} from './components/editDoctor/editDoctor.component';
+import {DoctorComponent} from './components/doctor/doctor.component';
 
 enableProdMode();
 
@@ -52,6 +57,11 @@ enableProdMode();
     DiseaseComponent,
     EditDiseaseComponent,
     PatientsReportComponent,
+    PatientComponent,
+    AddDiseaseComponent,
+    DoctorsComponent,
+    EditDoctorComponent,
+    DoctorComponent,
   ],
   providers: [
     /*{

@@ -1,5 +1,5 @@
 <div class="register">
-  <h3 *ngIf="!creatingSymptom">Izmjena bolesti</h3>
+  <h3 *ngIf="!creatingSymptom">Dodaj novu bolest</h3>
   <h3 *ngIf="creatingSymptom">Dodaj novi simptom</h3>
 
   <div class="form-group" *ngIf="!creatingSymptom">
@@ -52,7 +52,7 @@
     </select>
   </div>
 
-  <button *ngIf="!creatingSymptom" type="submit" (click)="editDisease()"  class="btn btn-primary" id="registerButton">Potvrdi</button>
+  <button *ngIf="!creatingSymptom" type="submit" (click)="addDisease()"  class="btn btn-primary" id="registerButton">Dodaj bolest</button>
   <button *ngIf="creatingSymptom" type="submit" (click)="addNewSymptom()"  class="btn btn-primary" id="symptomButton">Dodaj simptom</button>
 
 </div>

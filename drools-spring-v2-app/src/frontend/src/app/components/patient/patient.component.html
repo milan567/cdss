@@ -1,0 +1,26 @@
+<div class="register">
+  <h3>Pacijent</h3>
+
+  <p *ngIf="patient">Pacijent: {{patient.patientName}} {{patient.patientSurame}}</p>
+</div>
+
+<div class="container" ng-app="invoice" *ngIf="patient">
+  <section class="row" ng-controller="InvoiceController">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>Datum pregleda</th>
+        <th>Dijagnoza</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of patient.examinations | paginate: {itemsPerPage:5, currentPage: p}">
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.date" class="form-control" /></fieldset></td>
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.disease.disease" class="form-control" /></fieldset></td>
+      </tr>
+      </tbody>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </section>
+</div>
+

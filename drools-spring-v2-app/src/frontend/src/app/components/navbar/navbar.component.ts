@@ -43,8 +43,9 @@ export class NavbarComponent implements OnInit
 
   presetAdmin()
   {
-    this.addLink({text: "Dodaj nova pravila", routerLink: "/dodajPravila"});
     this.addLink({text: "Doktori", routerLink: "/sviDoktori"});
+    this._router.navigateByUrl("/sviDoktori");
+    this.addLink({text: "Logout", routerLink: "/"});
   }
 
   presetUser()
@@ -52,13 +53,24 @@ export class NavbarComponent implements OnInit
     this.addLink( {text: "Pacijenti", routerLink: "/sviPacijenti"});
     this.addLink({text: "Bolesti", routerLink: "/sveBolesti"});
     this.addLink({text: "Izvjestaj", routerLink: "/izvjestaj"});
+    this.addLink({text: "Logout", routerLink: "/"});
+    this._router.navigateByUrl("/sviPacijenti");
   }
 
 
   logout()
   {
     this.links = [];
-    this.addLink({text: "Login", routerLink: "/"});
-    LoggedUtils.clearLocalStorage();
+    this.addLink({text: "Login", routerLink: "/"})
+    this.authenticationService.logOut().subscribe(
+      next => {
+        LoggedUtils.clearLocalStorage();
+        this._router.navigateByUrl("/");
+      },
+      error => {
+        LoggedUtils.clearLocalStorage();
+        this._router.navigateByUrl("/");
+      }
+    );
   }
 }

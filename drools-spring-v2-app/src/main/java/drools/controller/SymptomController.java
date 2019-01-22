@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.util.List;
 
 @RestController
@@ -24,6 +25,19 @@ public class SymptomController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllSymptoms() {
         try {
+            List<Symptom> symptoms = symptomService.findAllSymptoms();
+            return new ResponseEntity<>(symptoms, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("Invalid request", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/api/simptom/dodajNoviSimptom", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> addSymptom(@RequestBody Symptom s) {
+        try {
+            symptomService.save(s);
             List<Symptom> symptoms = symptomService.findAllSymptoms();
             return new ResponseEntity<>(symptoms, HttpStatus.OK);
         } catch (Exception ex) {

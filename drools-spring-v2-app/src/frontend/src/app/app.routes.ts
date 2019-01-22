@@ -7,6 +7,11 @@ import {DiseasesComponent} from './components/diseases/diseases.component';
 import {DiseaseComponent} from './components/disease/disease.component';
 import {EditDiseaseComponent} from './components/editDisease/editDisease.component';
 import {PatientsReportComponent} from './components/patientsReport/patientsReport.component';
+import {PatientComponent} from './components/patient/patient.component';
+import {AddDiseaseComponent} from './components/addDisease/addDisease.component';
+import {DoctorsComponent} from './components/doctors/doctors.component';
+import {EditDoctorComponent} from './components/editDoctor/editDoctor.component';
+import {DoctorComponent} from './components/doctor/doctor.component';
 
 const appRoutes : Routes =
   [
@@ -36,6 +41,26 @@ const appRoutes : Routes =
     {
       path : 'izvjestaj',
       component : PatientsReportComponent
+    },
+    {
+      path : 'pacijent/:id',
+      component : PatientComponent
+    },
+    {
+      path: 'dodajBolest',
+      component: AddDiseaseComponent
+    },
+    {
+      path: 'sviDoktori',
+      component: DoctorsComponent
+    },
+    {
+      path: 'doktor/:id',
+      component: EditDoctorComponent
+    },
+    {
+      path: 'doktor/info/:id',
+      component: DoctorComponent
     }
   ];
 
