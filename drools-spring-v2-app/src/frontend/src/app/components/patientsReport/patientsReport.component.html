@@ -1,11 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<div class="patient-table">
+<div>
+  <section>
+    <button type="submit" (click)="getChronicDiseases()"  class="btn btn-primary">Pacijeti sa hronicnim oboljenjima</button>
+    <button type="submit" (click)="getPotentialAddicts()"  class="btn btn-primary">Potencijalni zavisnici</button>
+    <button type="submit" (click)="getLowImmunityPatients()"  class="btn btn-primary">Pacijeti sa oslabljenim imunitetom</button>
+  </section>
+</div>
+<div class="patient-table" *ngIf="!initPage">
   <table class="table table-hover">
     <thead>
     <tr>
@@ -21,11 +21,9 @@
       <td>{{patient.patientName}}</td>
       <td>{{patient.patientSurame}}</td>
       <td><button  type="submit"  class="btn btn-primary"  (click)="getDiagnose(patient.id)">Dijagnoza</button>
-          <button  type="submit"  class="btn btn-primary" >Profil</button></td>
+        <button  type="submit"  class="btn btn-primary" >Profil</button></td>
     </tr>
     </tbody>
     <pagination-controls (pageChange)="p = $event"></pagination-controls>
   </table>
 </div>
-</body>
-</html>

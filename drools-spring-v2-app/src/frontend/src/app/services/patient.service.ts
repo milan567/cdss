@@ -20,7 +20,19 @@ export class PatientService {
     return this.http.get<Patient[]>("/api/sviPacijenti");
   }
 
+  getChronicDiseases(){
+    return this.http.get<Patient[]>("/api/pacijentiSaHronicnimOboljenjima",{headers: this.headers, observe: 'response'});
+  }
+
   getPatient(id:string){
     return this.http.get<Patient>("/api/pacijent/" + id);
+  }
+
+  getPotentialAddicts() {
+    return this.http.get<Patient[]>("/api/potencijalniZavisnici",{headers: this.headers, observe: 'response'});
+  }
+
+  getLowImmunityPatients() {
+    return this.http.get<Patient[]>("/api/pacijentiSaSlabimImunitetom",{headers: this.headers, observe: 'response'});
   }
 }

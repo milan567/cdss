@@ -6,6 +6,7 @@ import {PatientsComponent} from './components/patients/patients.component';
 import {DiseasesComponent} from './components/diseases/diseases.component';
 import {DiseaseComponent} from './components/disease/disease.component';
 import {EditDiseaseComponent} from './components/editDisease/editDisease.component';
+import {PatientsReportComponent} from './components/patientsReport/patientsReport.component';
 
 const appRoutes : Routes =
   [
@@ -32,6 +33,10 @@ const appRoutes : Routes =
       path : 'izmjenaBolesti/:id',
       component : EditDiseaseComponent
     },
+    {
+      path : 'izvjestaj',
+      component : PatientsReportComponent
+    }
   ];
 
 export const routing : ModuleWithProviders = RouterModule.forRoot(appRoutes);

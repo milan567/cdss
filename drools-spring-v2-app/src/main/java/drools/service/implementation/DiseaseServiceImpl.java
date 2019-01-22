@@ -90,13 +90,10 @@ public class DiseaseServiceImpl implements DiseaseService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
         List<PotentialDiseasesResponseDTO> response = new ArrayList<>();
-        System.out.println("-------------------");
         for (Disease d : result.keySet()){
-            System.out.println(d);
             PotentialDiseasesResponseDTO pdrDTO = new PotentialDiseasesResponseDTO(d,Integer.parseInt(result.get(d).toString()));
             response.add(pdrDTO);
         }
-        System.out.println("------------------");
         release(kieSession);
         return response;
     }

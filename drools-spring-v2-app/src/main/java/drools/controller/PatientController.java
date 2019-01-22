@@ -35,6 +35,45 @@ public class PatientController {
         }
     }
 
+    @RequestMapping(value = "/api/pacijentiSaHronicnimOboljenjima", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getPatientsWithChronicDiseases(HttpServletRequest request) {
+        try {
+            List<Patient> patients = patientService.getPatientsWithChronicDiseases(
+                    (KieSession) request.getSession().getAttribute("kieSession"));
+            return new ResponseEntity<>(patients, HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>("Invalid request", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/api/potencijalniZavisnici", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getPotentialAddicts(HttpServletRequest request) {
+        try {
+            List<Patient> patients = patientService.getPotentialAddicts(
+                    (KieSession) request.getSession().getAttribute("kieSession"));
+            return new ResponseEntity<>(patients, HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>("Invalid request", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/api/pacijentiSaSlabimImunitetom", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getLowImmunityPatients(HttpServletRequest request) {
+        try {
+            List<Patient> patients = patientService.getLowImmunityPatients(
+                    (KieSession) request.getSession().getAttribute("kieSession"));
+            return new ResponseEntity<>(patients, HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>("Invalid request", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @RequestMapping(value = "api/pacijent/{id}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getDisease(@PathVariable("id") Integer id) {

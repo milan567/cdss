@@ -95,7 +95,7 @@ export class EditDiseaseComponent {
       alert("Sva polja moraju biti popunjena");
     }
     else {
-      this.symptom = new Symptom("",this.text);
+      this.symptom = new Symptom("",this.text,"NONSPECIFIC");
       this.symptomService.addSymptom(this.symptom).subscribe(
         data => {
           this.creatingSymptom = !this.creatingSymptom;

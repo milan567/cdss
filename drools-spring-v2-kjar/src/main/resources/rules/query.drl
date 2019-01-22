@@ -25,3 +25,55 @@ query "Simptomi bolesti sortirani po specificnosti" (Disease $disease)
 				collectList($specificSymptom)
 				)
 end
+
+
+query "Pacijent sa hronicnom bolescu"
+	p : Patient($id : id, $examinations : examinations)
+	d : Disease(disease != "Prehlada", disease != "Groznica", $disease : disease)
+	$dc : DateChecker()
+	list : List(size>5) from accumulate (
+		$r : Examination(disease.disease==$disease && $dc.last2Years()<date) from $examinations,
+		collectList($r)
+	)
+end
+
+
+query "Potencijalni zavisnik"
+	p : Patient($id : id, $examinations : examinations)
+    $dc : DateChecker()
+    $m: Medication (medicationType==MedicationType.ANALGETIC)
+    examinationsList : List(size>=6) from accumulate (
+		$ex : Examination($dc.last6Months()<date, $medList:medications) from $examinations
+		and
+		Medication(medicationType==MedicationType.ANALGETIC) from $medList,
+        collectList($ex)
+    )
+	doctorsList :Set(size>=3) from accumulate(
+		$d : Examination($doctor : doctor) from examinationsList,
+		collectSet($doctor)
+	)
+end
+
+
+query "Pacijent sa oslabljenim imunitetom"
+	p : Patient($id : id, $examinations : examinations)
+	$dc : DateChecker()
+	examinationsList : List(size>=10) from accumulate (
+		$ex : Examination($dc.last12Months()<date) from $examinations,
+        collectList( $ex )
+    )
+    diseasesList :Set(size>=2) from accumulate(
+		$d : Examination($disease : disease) from examinationsList,
+		collectSet($disease)
+	)
+	medicationsList : List() from accumulate(
+    	$m : Examination($medications: medications) from examinationsList,
+    	init( List list = new ArrayList(); )
+        action(list.addAll($m.getMedications()); )
+        result( list ) )
+    antibioticsList : List() from accumulate(
+    	$antibiotics : Medication( medicationType == MedicationType.ANTIBIOTIC) from medicationsList,
+    	collectList($antibiotics)
+    )
+	eval(medicationsList.size()==antibioticsList.size())
+end

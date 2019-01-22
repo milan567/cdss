@@ -1,0 +1,9 @@
+.patient-table {
+  position: relative;
+  width: 80%;
+  left: 10%;
+}
+
+.button{
+  cursor: pointer;
+}
