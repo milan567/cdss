@@ -3,6 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent} from './components/home/home.component';
 import {DiagnosisComponent} from './components/diagnosis/diagnosis.component';
 import {PatientsComponent} from './components/patients/patients.component';
+import {DiseasesComponent} from './components/diseases/diseases.component';
+import {DiseaseComponent} from './components/disease/disease.component';
+import {EditDiseaseComponent} from './components/editDisease/editDisease.component';
 
 const appRoutes : Routes =
   [
@@ -16,6 +19,18 @@ const appRoutes : Routes =
     {
       path: 'sviPacijenti',
       component: PatientsComponent,
+    },
+    {
+      path: 'sveBolesti',
+      component: DiseasesComponent,
+    },
+    {
+      path: 'bolest/:id',
+      component: DiseaseComponent,
+    },
+    {
+      path : 'izmjenaBolesti/:id',
+      component : EditDiseaseComponent
     },
   ];
 

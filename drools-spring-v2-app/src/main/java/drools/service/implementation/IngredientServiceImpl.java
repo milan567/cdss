@@ -17,4 +17,9 @@ public class IngredientServiceImpl implements IngredientService {
     public Ingredient save(Ingredient ingredient) {
         return ingredientRepository.save(ingredient);
     }
+
+    @Override
+    public Ingredient findIngredientByText(String text) {
+        return ingredientRepository.findIngredientByText(text);
+    }
 }

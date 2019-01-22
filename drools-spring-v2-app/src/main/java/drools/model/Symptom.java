@@ -14,6 +14,9 @@ public class Symptom {
     @Column(name = "text")
     private String text;
 
+    @Column(name= "type")
+    private SymptomType symptomType;
+
     public Integer getId() {
         return id;
     }
@@ -30,7 +33,20 @@ public class Symptom {
         this.text = text;
     }
 
+    public SymptomType getSymptomType() {
+        return symptomType;
+    }
+
+    public void setSymptomType(SymptomType symptomType) {
+        this.symptomType = symptomType;
+    }
+
     public Symptom() {
+    }
+
+    public Symptom(String text, SymptomType symptomType) {
+        this.text = text;
+        this.symptomType = symptomType;
     }
 
     public Symptom(String text) {
@@ -42,6 +58,7 @@ public class Symptom {
         return "Symptom{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
+                ", symptomType=" + symptomType +
                 '}';
     }
 

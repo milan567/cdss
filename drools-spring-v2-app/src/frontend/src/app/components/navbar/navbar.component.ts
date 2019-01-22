@@ -50,8 +50,7 @@ export class NavbarComponent implements OnInit
   presetUser()
   {
     this.addLink( {text: "Pacijenti", routerLink: "/sviPacijenti"});
-    this.addLink({text: "Bolesti", routerLink: "/dijagnoza"});
-    //this._router.navigate(['/adminPage']);
+    this.addLink({text: "Bolesti", routerLink: "/sveBolesti"});
   }
 
 
@@ -59,8 +58,6 @@ export class NavbarComponent implements OnInit
   {
     this.links = [];
     this.addLink({text: "Login", routerLink: "/"});
-    //this.addLink({text: "All logs", routerLink: "/allLogs"});
-    //this.addLink({text: "Add user", routerLink: "/addUser"});
     LoggedUtils.clearLocalStorage();
   }
 }

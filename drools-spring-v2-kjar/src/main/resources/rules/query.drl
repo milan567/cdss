@@ -14,3 +14,14 @@ query "Potencijalne bolesti sortirane po simptomima" (List symptomList)
           count($symptom)
         )
 end
+
+query "Simptomi bolesti sortirani po specificnosti" (Disease $disease)
+		nonSpecificSymptoms : List() from accumulate (
+				$nonspecificSymptom:Symptom(symptomType==SymptomType.NONSPECIFIC) from $disease.symptoms,
+				collectList($nonspecificSymptom)
+				)
+		specificSymptoms : List() from accumulate (
+				$specificSymptom:Symptom(symptomType==SymptomType.SPECIFIC) from $disease.symptoms,
+				collectList($specificSymptom)
+				)
+end

@@ -2,7 +2,9 @@
   <h3>Pregled</h3>
 
   <p *ngIf="currentPatient">Pacijent: {{currentPatient.patientName}} {{currentPatient.patientSurame}}</p>
+</div>
 
+<div *ngIf="diagnoseBool">
   <div class="form-group" *ngIf="currentPatient">
     <label for="rep">Unesite broj kartona:</label>
     <input type="text" class="form-control" id="rep" placeholder="Pacijent" name="usr"
@@ -37,8 +39,159 @@
 
 
   <div class="form-group">
-    <button type="submit" (click)="diagnose()"  class="btn btn-primary" id="registerButton">Pokreni rezoner</button>
-    <button type="submit" (click)="potentialDiseases()"  class="btn btn-primary" id="registerButton">Potencijalne bolesti</button>
-    <button type="submit" (click)="diagnose()"  class="btn btn-primary" id="registerButton">Uspostavi dijagnozu</button>
+    <button type="submit" (click)="diagnose()"  class="btn btn-primary" id="resonerButton">Pokreni rezoner</button>
+    <button type="submit" (click)="potentialDiseases()"  class="btn btn-primary" id="potentialDiseaseButton">Potencijalne bolesti</button>
+    <button type="submit" (click)="showDiseaseWithSymptoms()"  class="btn btn-primary" id="showDiseaseButton">Prikazi bolest sa simptomima</button>
+    <button type="submit" (click)="getOwnDiagnose()"  class="btn btn-primary" id="diagnoseButton">Licno uspostavi dijagnozu</button>
+  </div>
+</div>
+
+<div class="container" ng-app="invoice" *ngIf="potentialDiseaseSelected">
+  <div class="form-group" *ngIf="diseaseSymptoms.length != 0">
+    <label for="symptomsOfDisease">Navedeni simptomi</label>
+    <table class="table table-hover" id ="selectedSymptoms">
+      <tbody>
+      <tr *ngFor="let item of diseaseSymptoms | paginate: {itemsPerPage:5, currentPage: p}">
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.text" class="form-control" /></fieldset></td>
+      </tr>
+      </tbody>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </div>
+  <section class="row" ng-controller="InvoiceController">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>Najvjerovatnija bolest</th>
+       </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="potentialDisease.disease" class="form-control" /></fieldset></td>
+        <td><button type="submit" (click)="confirmDisease(potentialDisease.id)" class="btn btn-primary">
+          Potvrdi bolest
+        </button></td>
+        <td><button type="submit" (click)="back()" class="btn btn-primary">
+          Nazad
+        </button></td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+
+<div class="container" ng-app="invoice" *ngIf="potentialDiseasesSelected">
+  <div class="form-group" *ngIf="potentialDiseasesList.length != 0">
+    <table class="table table-hover" id ="potentialDiseases">
+      <thead>
+      <tr>
+        <th>Potencijalne bolesti</th>
+        <th>Zadovoljavajuci simptomi</th>
+        <th><button type="submit" (click)="back()" class="btn btn-primary">
+          Nazad
+        </button></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of potentialDiseasesList | paginate: {itemsPerPage:5, currentPage: p}">
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.disease.disease" class="form-control" /></fieldset></td>
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.satisfiedSymptoms" class="form-control" /></fieldset></td>
+        <td><button type="submit" (click)="confirmDisease(item.disease.id)" class="btn btn-primary">
+          Potvrdi bolest
+        </button></td>
+      </tr>
+      </tbody>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </div>
+</div>
+
+<div class="container" ng-app="invoice" *ngIf="diseaseSelected">
+  <div class="form-group">
+    <label for="exampleSelect1">Odaberite bolest:</label>
+    <div class="form-inline">
+      <select   class="form-control" id="exampleSelect2" [(ngModel)]="diseaseOption">
+        <option *ngFor="let item of allDiseases">{{item.disease}}</option>
+      </select>
+      <button type="submit" (click)="getDiseaseWithSymptoms()" class="btn btn-primary" id="showDiseaseButton1">Prikazi bolest</button>
+    </div>
+  </div>
+  <div class="container" ng-app="invoice" *ngIf="sortedSymptoms.length != 0">
+      <table class="table table-hover" id ="symptomsOfDiseaseSorted">
+        <thead>
+        <tr>
+          <th>Simptom</th>
+          <th>Specifican</th>
+          <th><button type="submit" (click)="back()" class="btn btn-primary">
+            Nazad
+          </button></th>
+          <td><button type="submit" (click)="getConfirmedDisease()" class="btn btn-primary">
+            Potvrdi bolest
+          </button></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of sortedSymptoms | paginate: {itemsPerPage:5, currentPage: p}">
+          <td><fieldset disabled=""><input type="text" [(ngModel)]="item.text" class="form-control" /></fieldset></td>
+          <td *ngIf="item.symptomType=='SPECIFIC'"><fieldset disabled=""><input type="text" value="Specifican" class="form-control" /></fieldset></td>
+          <td *ngIf="item.symptomType=='NONSPECIFIC'"><fieldset disabled=""><input type="text" value="Opsti" class="form-control" /></fieldset></td>
+        </tr>
+        </tbody>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </table>
+  </div>
+</div>
+
+
+<div class="container" ng-app="invoice" *ngIf="finalDiseaseSelected">
+  <p><b>Bolest: {{finalDisease.disease}}</b></p>
+  <div class="form-group" *ngIf="diseaseSymptoms.length != 0">
+    <label for="symptomsOfDisease">Navedeni simptomi</label>
+    <table class="table table-hover" id ="finalSymptoms">
+      <tbody>
+      <tr *ngFor="let item of diseaseSymptoms | paginate: {itemsPerPage:3, currentPage: p}">
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.text" class="form-control" /></fieldset></td>
+      </tr>
+      </tbody>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </div>
+  <section class="row" ng-controller="InvoiceController">
+    <div class="form-group">
+    <label for="exampleSelect1">Odaberite lijek:</label>
+    <div class="form-inline">
+      <select   class="form-control" id="medicationSelect" [(ngModel)]="medicationOption">
+        <option *ngFor="let item of medications">{{item.text}}</option>
+      </select>
+      <button type="submit" (click)="addMedication()" class="btn btn-primary">Prepisi lijek</button>
+      <button type="submit" (click)="finishDiagnose()" class="btn btn-primary">Uspostavi dijagnozu</button>
+    </div>
+    </div>
+  </section>
+  <div class="form-group" *ngIf="selectedMedications.length != 0">
+    <label for="symptomsOfDisease">Prepisani lijekovi</label>
+    <table class="table table-hover" id ="perscriptedMedications">
+      <tbody>
+      <tr *ngFor="let item of selectedMedications | paginate: {itemsPerPage:2, currentPage: p}">
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.text" class="form-control" /></fieldset></td>
+        <td><button type="submit" (click)="removeMedication(item.id)" class="btn btn-primary" id="removeMedicationButton">
+          Ukloni lijek
+        </button></td>
+      </tr>
+      </tbody>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </div>
+</div>
+
+<div class="container" ng-app="invoice" *ngIf="ownDiagnoseSelected">
+  <div class="form-group">
+    <label for="exampleSelect1">Odaberite bolest:</label>
+    <div class="form-inline">
+      <select   class="form-control" id="exampleSelect3" [(ngModel)]="diseaseOption">
+        <option *ngFor="let item of allDiseases">{{item.disease}}</option>
+      </select>
+      <button type="submit" (click)="getConfirmedDisease()" class="btn btn-primary" id="showDiseaseButton1">Prikazi bolest</button>
+    </div>
   </div>
 </div>

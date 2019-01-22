@@ -1,9 +1,12 @@
 package drools.service.implementation;
 
 import drools.model.*;
+import drools.model.dto.AddDiseaseDTO;
 import drools.model.dto.DiagnosePatientDTO;
+import drools.model.dto.PotentialDiseasesResponseDTO;
 import drools.repository.DiseaseRepository;
 import drools.repository.PatientRepository;
+import drools.repository.SymptomRepository;
 import drools.service.DiseaseService;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.QueryResults;
@@ -23,6 +26,9 @@ public class DiseaseServiceImpl implements DiseaseService {
     @Autowired
     PatientRepository patientRepository;
 
+    @Autowired
+    SymptomRepository symptomRepository;
+
     @Override
     public Disease save(Disease d)
     {
@@ -31,10 +37,6 @@ public class DiseaseServiceImpl implements DiseaseService {
 
     @Override
     public Disease diagnose(DiagnosePatientDTO diagnosePatientDTO, KieSession kieSession) {
-        List<Disease> diseases = diseaseRepository.findAll();
-        for (int i = 0; i <diseases.size(); i++) {
-            kieSession.insert(diseases.get(i));
-        }
         for (int i = 0; i < diagnosePatientDTO.getSymptoms().size(); i++) {
             kieSession.insert(diagnosePatientDTO.getSymptoms().get(i));
         }
@@ -51,7 +53,7 @@ public class DiseaseServiceImpl implements DiseaseService {
         e.setDisease(null);
         e.setSymptoms(diagnosePatientDTO.getSymptoms());
         kieSession.insert(e);
-        kieSession.getAgenda().getAgendaGroup("diseases-group").setFocus();
+        kieSession.getAgenda().getAgendaGroup("bolesti").setFocus();
         kieSession.fireAllRules();
         System.out.println("Output: " + e.getDisease());
         release(kieSession);
@@ -69,7 +71,7 @@ public class DiseaseServiceImpl implements DiseaseService {
     }
 
     @Override
-    public List<Disease> findPotentialDiseasesSorted(List<Symptom> symptomList, KieSession kieSession) {
+    public List<PotentialDiseasesResponseDTO> findPotentialDiseasesSorted(List<Symptom> symptomList, KieSession kieSession) {
         for (int i = 0; i  < symptomList.size(); i++){
             System.out.println("Simptom: " + symptomList.get(i));
         }
@@ -87,12 +89,90 @@ public class DiseaseServiceImpl implements DiseaseService {
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
-
+        List<PotentialDiseasesResponseDTO> response = new ArrayList<>();
+        System.out.println("-------------------");
         for (Disease d : result.keySet()){
             System.out.println(d);
+            PotentialDiseasesResponseDTO pdrDTO = new PotentialDiseasesResponseDTO(d,Integer.parseInt(result.get(d).toString()));
+            response.add(pdrDTO);
         }
+        System.out.println("------------------");
         release(kieSession);
-        return null;
+        return response;
+    }
+
+    @Override
+    public List<Disease> findAllDiseases() {
+        return diseaseRepository.findAll();
+    }
+
+    @Override
+    public Disease findDisease(Integer id) {
+        return diseaseRepository.getOne(id);
+    }
+
+    @Override
+    public Disease deleteSymptomFromDisease(Integer disease, Integer symptom) {
+        Disease d =  diseaseRepository.getOne(disease);
+        Symptom s = symptomRepository.getOne(symptom);
+        d.getSymptoms().remove(s);
+        System.out.println(d);
+        d = diseaseRepository.save(d);
+        return d;
+    }
+
+    @Override
+    public List<Disease> deleteDisease(Integer disease) {
+        Disease d =  diseaseRepository.getOne(disease);
+        diseaseRepository.delete(d);
+        return diseaseRepository.findAll();
+    }
+
+    @Override
+    public Disease addDisease(AddDiseaseDTO addDiseaseDTO) {
+        Disease disease = new Disease();
+        disease.setDisease(addDiseaseDTO.getDisease());
+        disease.setGroup(addDiseaseDTO.getGroup());
+        disease.setSymptoms(addDiseaseDTO.getSymptoms());
+        return diseaseRepository.save(disease);
+    }
+
+    @Override
+    public Disease editDisease(AddDiseaseDTO addDiseaseDTO) {
+        Disease d = diseaseRepository.getOne(Integer.parseInt(addDiseaseDTO.getId()));
+        d.setSymptoms(addDiseaseDTO.getSymptoms());
+        d.setGroup(addDiseaseDTO.getGroup());
+        d.setDisease(addDiseaseDTO.getDisease());
+        return diseaseRepository.save(d);
+    }
+
+    @Override
+    public List<Symptom> findDiseaseWithSortedSymptoms(Integer id, KieSession kieSession) {
+
+        Disease disease = diseaseRepository.getOne(id);
+        if (disease == null){
+            return null;
+        }
+
+        QueryResults results = kieSession.getQueryResults("Simptomi bolesti sortirani po specificnosti"
+                , new Object[] { disease });
+
+        ArrayList<Symptom> symptoms = new ArrayList<>();
+
+        for (QueryResultsRow row : results) {
+            Collection<Symptom> nonSpecificSymptoms = (Collection<Symptom>) row.get("nonSpecificSymptoms");
+            Collection<Symptom> specificSymptoms = (Collection<Symptom>) row.get("specificSymptoms");
+            for (Symptom s : specificSymptoms) {
+                symptoms.add(s);
+            }
+            for (Symptom s : nonSpecificSymptoms) {
+                symptoms.add(s);
+            }
+        }
+
+        for (Symptom s: symptoms){
+        }
+        return symptoms;
     }
 
     public void release(KieSession kieSession) {

@@ -50,8 +50,8 @@ public class Initializer implements ApplicationRunner {
         addDoctors();
         addSymptoms();
         addDiseases();
-        addPatients();
         addMedications();
+        addPatients();
         addExaminations();
     }
 
@@ -87,30 +87,30 @@ public class Initializer implements ApplicationRunner {
     }
 
     private void addSymptoms() {
-        Symptom s = new Symptom("Curenje iz nosa");
-        Symptom s1 = new Symptom("Bol u grlu");
-        Symptom s2 = new Symptom("Glavobolja");
-        Symptom s3 = new Symptom("Kijanje");
-        Symptom s4 = new Symptom("Kasalj");
-        Symptom s5 = new Symptom("Temperatura veca od 38");
-        Symptom s6 = new Symptom("Drhtavica");
-        Symptom s7 = new Symptom("Bol koji se siri do usiju");
-        Symptom s8 = new Symptom("Temperatura od 40 do 41");
-        Symptom s9 = new Symptom("Gubitak apetita");
-        Symptom s10 = new Symptom("Umor");
-        Symptom s11 = new Symptom("Zuti sekret iz nosa");
-        Symptom s12 = new Symptom("Oticanje oko ociju");
-        Symptom s13 = new Symptom("Visok krvni pritisak");
-        Symptom s14 = new Symptom("Cesto uriniranje");
-        Symptom s15 = new Symptom("Gubitak tjelesne tezine");
-        Symptom s16 = new Symptom("Zamor");
-        Symptom s17 = new Symptom("Mucnina i povracanje");
-        Symptom s18 = new Symptom("Nocturia");
-        Symptom s19 = new Symptom("Otoci nogu i zglobova");
-        Symptom s20 = new Symptom("Gusenje");
-        Symptom s21 = new Symptom("Bol u grudima");
-        Symptom s22 = new Symptom("Dijareja");
-        Symptom s23 = new Symptom("Oporavak od operacije");
+        Symptom s = new Symptom("Curenje iz nosa",SymptomType.NONSPECIFIC);
+        Symptom s1 = new Symptom("Bol u grlu",SymptomType.NONSPECIFIC);
+        Symptom s2 = new Symptom("Glavobolja",SymptomType.NONSPECIFIC);
+        Symptom s3 = new Symptom("Kijanje",SymptomType.NONSPECIFIC);
+        Symptom s4 = new Symptom("Kasalj",SymptomType.NONSPECIFIC);
+        Symptom s5 = new Symptom("Temperatura veca od 38",SymptomType.NONSPECIFIC);
+        Symptom s6 = new Symptom("Drhtavica",SymptomType.NONSPECIFIC);
+        Symptom s7 = new Symptom("Bol koji se siri do usiju",SymptomType.NONSPECIFIC);
+        Symptom s8 = new Symptom("Temperatura od 40 do 41",SymptomType.NONSPECIFIC);
+        Symptom s9 = new Symptom("Gubitak apetita",SymptomType.NONSPECIFIC);
+        Symptom s10 = new Symptom("Umor",SymptomType.NONSPECIFIC);
+        Symptom s11 = new Symptom("Zuti sekret iz nosa",SymptomType.NONSPECIFIC);
+        Symptom s12 = new Symptom("Oticanje oko ociju",SymptomType.NONSPECIFIC);
+        Symptom s13 = new Symptom("Visok krvni pritisak",SymptomType.NONSPECIFIC);
+        Symptom s14 = new Symptom("Cesto uriniranje",SymptomType.NONSPECIFIC);
+        Symptom s15 = new Symptom("Gubitak tjelesne tezine",SymptomType.NONSPECIFIC);
+        Symptom s16 = new Symptom("Zamor",SymptomType.NONSPECIFIC);
+        Symptom s17 = new Symptom("Mucnina i povracanje",SymptomType.NONSPECIFIC);
+        Symptom s18 = new Symptom("Nocturia",SymptomType.NONSPECIFIC);
+        Symptom s19 = new Symptom("Otoci nogu i zglobova",SymptomType.NONSPECIFIC);
+        Symptom s20 = new Symptom("Gusenje",SymptomType.NONSPECIFIC);
+        Symptom s21 = new Symptom("Bol u grudima",SymptomType.NONSPECIFIC);
+        Symptom s22 = new Symptom("Dijareja",SymptomType.NONSPECIFIC);
+        Symptom s23 = new Symptom("Oporavak od operacije",SymptomType.SPECIFIC);
 
         symptomService.save(s);
         symptomService.save(s1);
@@ -244,6 +244,22 @@ public class Initializer implements ApplicationRunner {
       //  Patient p12 = new Patient("Marko","Gobeljic");
       //  Patient p13 = new Patient("Milos","Degenek");
 
+        Ingredient i = ingredientService.findIngredientByText("Sastojak 1");
+        Ingredient i1 = ingredientService.findIngredientByText("Sastojak 2");
+        Ingredient i2 = ingredientService.findIngredientByText("Sastojak 3");
+        Ingredient i3 = ingredientService.findIngredientByText("Sastojak 4");
+
+        Medication m = medicationService.findMedicationByText("Amoksicilin");
+        Medication m1 = medicationService.findMedicationByText("Motrin");
+
+        p8.getIngredientAllergies().add(i);
+        p8.getIngredientAllergies().add(i2);
+
+        p9.getIngredientAllergies().add(i1);
+        p9.getIngredientAllergies().add(i3);
+
+        p8.getMedicationAllergies().add(m);
+        p9.getMedicationAllergies().add(m1);
 
         patientService.save(p1);
         patientService.save(p2);

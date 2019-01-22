@@ -3,7 +3,7 @@ package rules;
 import drools.model.*;
 import java.util.*;
 
-agenda-group "diseases-group"
+agenda-group "bolesti"
 
 rule "Prehlada"
 	no-loop

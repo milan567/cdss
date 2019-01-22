@@ -3,7 +3,7 @@ import {Headers, Http, HttpModule} from '@angular/http';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 
-import { Disease, Symptom } from "../models";
+import {Condition, Disease, Medication, PotentialDisease, Symptom} from '../models';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'content-type': 'application/json' })
@@ -25,6 +25,16 @@ export class DiagnoseService {
 
 
   potentialDiseases(symptoms:Symptom[]){
-    return this.http.post<Disease[]>("/api/doktor/potencijalneBolesti", symptoms,{headers: this.headers, observe: 'response'});
+    return this.http.post<PotentialDisease[]>("/api/doktor/potencijalneBolesti", symptoms,{headers: this.headers, observe: 'response'});
+  }
+
+  checkPatientAllergies(id: string, medication: string) {
+    return this.http.get<Condition>("/api/pacijent/"+id+"/lijek/"+medication,{headers: this.headers, observe: 'response'});
+  }
+
+  finishDiagnose(patientId:string,symptoms:Symptom[],disease:Disease,medications:Medication[]){
+    let param = {patientId:patientId, symptoms:symptoms,
+      disease:disease, medications:medications};
+    return this.http.post<PotentialDisease[]>("api/pregled/noviPregled", param,{headers: this.headers, observe: 'response'});
   }
 }

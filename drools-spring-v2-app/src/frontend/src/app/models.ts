@@ -63,6 +63,23 @@ export class Symptom
 {
   constructor(public id:string,
               public text:string,
+              public symptomType:string,
+  ){}
+}
+
+export class Ingredient
+{
+  constructor(public id:string,
+              public text:string,
+  ){}
+}
+
+export class Medication
+{
+  constructor(public id:string,
+              public text:string,
+              public ingredients:Ingredient[],
+              public medicationType:string,
   ){}
 }
 
@@ -76,5 +93,18 @@ export class Disease
 }
 
 
+export class PotentialDisease{
 
+  constructor( public disease:Disease,
+               public satisfiedSymptoms:number) {}
+
+}
+
+export class Condition{
+
+  constructor( public conditionSatisfied:boolean,
+               public message:string[]) {}
+
+
+}
 

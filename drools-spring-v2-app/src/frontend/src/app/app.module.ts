@@ -20,6 +20,11 @@ import {DiagnoseService} from './services/diagnose.service';
 import {SymptomService} from './services/symptom.service';
 import { AuthenticationService } from "./services/authentication.service";
 import {PatientService} from './services/patient.service';
+import {DiseasesComponent} from './components/diseases/diseases.component';
+import {DiseaseComponent} from './components/disease/disease.component';
+import {EditDiseaseComponent} from './components/editDisease/editDisease.component';
+import {MedicationService} from './services/medication.service';
+import {DiseaseService} from './services/disease.service';
 
 enableProdMode();
 
@@ -42,6 +47,9 @@ enableProdMode();
     HomeComponent,
     DiagnosisComponent,
     PatientsComponent,
+    DiseasesComponent,
+    DiseaseComponent,
+    EditDiseaseComponent,
   ],
   providers: [
     /*{
@@ -54,6 +62,8 @@ enableProdMode();
     SymptomService,
     DiagnoseService,
     PatientService,
+    DiseaseService,
+    MedicationService,
   ],
   bootstrap:    [ AppComponent ]
 })

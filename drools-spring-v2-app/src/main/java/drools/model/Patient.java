@@ -1,6 +1,7 @@
 package drools.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,6 +20,12 @@ public class Patient {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Examination> examinations;
+
+    @ManyToMany
+    private List<Ingredient> ingredientAllergies = new ArrayList<>();
+
+    @ManyToMany
+    private List<Medication> medicationAllergies = new ArrayList<>();
 
     public List<Examination> getExaminations() {
         return examinations;
@@ -44,6 +51,31 @@ public class Patient {
 
         this.patientName = patientName;
         this.patientSurame = patientSurame;
+    }
+
+    public Patient(String patientName, String patientSurame, List<Examination> examinations,
+                   List<Ingredient> ingredientAllergies, List<Medication> medicationAllergies) {
+        this.patientName = patientName;
+        this.patientSurame = patientSurame;
+        this.examinations = examinations;
+        this.ingredientAllergies = ingredientAllergies;
+        this.medicationAllergies = medicationAllergies;
+    }
+
+    public List<Ingredient> getIngredientAllergies() {
+        return ingredientAllergies;
+    }
+
+    public void setIngredientAllergies(List<Ingredient> ingredientAllergies) {
+        this.ingredientAllergies = ingredientAllergies;
+    }
+
+    public List<Medication> getMedicationAllergies() {
+        return medicationAllergies;
+    }
+
+    public void setMedicationAllergies(List<Medication> medicationAllergies) {
+        this.medicationAllergies = medicationAllergies;
     }
 
     public Integer getId() {

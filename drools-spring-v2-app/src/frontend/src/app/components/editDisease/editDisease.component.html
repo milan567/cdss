@@ -1,0 +1,54 @@
+<div class="register">
+  <h3 *ngIf="!creatingSymptom">Izmjena bolesti</h3>
+  <h3 *ngIf="creatingSymptom">Dodaj novi simptom</h3>
+
+  <div class="form-group" *ngIf="!creatingSymptom">
+    <label for="rep">Unesite naziv bolesti:</label>
+    <input type="text" class="form-control" id="rep" placeholder="Naziv bolesti" name="usr" [(ngModel)]="name" >
+  </div>
+
+  <div class="form-group" *ngIf="creatingSymptom">
+    <label for="rep">Unesite opis simptoma:</label>
+    <input type="text" class="form-control" id="rep1" placeholder="Tekst" name="usr" [(ngModel)]="text" >
+  </div>
+
+  <div class="form-group" *ngIf="diseaseSymptoms.length != 0 && !creatingSymptom">
+    <label for="symptomsOfDisease">Simptomi bolesti</label>
+    <table class="table table-hover" id ="symptomsOfDisease">
+      <tbody>
+      <tr *ngFor="let item of diseaseSymptoms | paginate: {itemsPerPage:2, currentPage: p}">
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.text" class="form-control" /></fieldset></td>
+        <td><button type="submit" (click)="removeSymptom(item.id)" class="btn btn-primary" id="diseaseButton">
+          Ukloni simptom
+        </button></td>
+      </tr>
+      </tbody>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </div>
+
+
+  <div class="form-group" *ngIf="!creatingSymptom">
+    <label for="exampleSelect1">Dodajte simptom:</label>
+    <select   class="form-control" id="exampleSelect1" [(ngModel)]="option">
+      <option *ngFor="let item of symptoms">{{item.text}}</option>
+    </select>
+    <button type="submit" (click)="addSymptom()"  class="btn btn-primary" id="addSymptomButton">Dodaj simptom</button>
+    <button type="submit" (click)="createNewSymptom()"  class="btn btn-primary" id="createSymptomButton">Kreiraj novi simptom</button>
+  </div>
+
+
+
+  <div class="form-group" *ngIf="!creatingSymptom">
+    <label for="type">Odaberite tip bolesti:</label>
+    <select   class="form-control" id="type" [(ngModel)]="option">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+    </select>
+  </div>
+
+  <button *ngIf="!creatingSymptom" type="submit" (click)="editDisease()"  class="btn btn-primary" id="registerButton">Potvrdi</button>
+  <button *ngIf="creatingSymptom" type="submit" (click)="addNewSymptom()"  class="btn btn-primary" id="symptomButton">Dodaj simptom</button>
+
+</div>

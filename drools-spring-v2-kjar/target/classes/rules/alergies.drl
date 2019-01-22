@@ -1,0 +1,37 @@
+package drools.spring.rules
+
+import drools.model.*;
+import java.util.*;
+
+global Integer patientId;
+
+agenda-group "alergije"
+
+rule "Provjera da li je pacijent alergican na lijek"
+	when
+		$medication : Medication( $medicationName: text )
+		$allergies: Patient( id == patientId, $medicationAllergies: medicationAllergies)
+		Number(intValue >= 1) from accumulate (
+			$found: Medication( text == $medicationName ) from $medicationAllergies,
+			init(int count = 0;),
+			action(count++;),
+			result(count)
+		)
+	then
+	insert($medication.getText());
+end
+
+
+rule "Provjera da li je pacijent alergican na sastojak"
+	when
+		$ingredient: Ingredient( $ingredientName: text)
+		$allergies: Patient( id == patientId, $ingredientAllergies: ingredientAllergies)
+		Number(intValue >= 1) from accumulate (
+			$found: Ingredient( text == $ingredientName ) from $ingredientAllergies,
+			init(int count = 0;),
+			action(count++;),
+			result(count)
+		)
+	then
+	insert($ingredient.getText());
+end

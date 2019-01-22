@@ -1,0 +1,24 @@
+<div class="container" ng-app="invoice">
+  <section class="row" ng-controller="InvoiceController">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Opis simptoma</th>
+        <th>Specificni simptom</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="disease">
+      <tr *ngFor="let item of disease.symptoms | paginate: {itemsPerPage:5, currentPage: p}">
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.id" class="form-control" /></fieldset></td>
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.text" class="form-control" /></fieldset></td>
+        <td><fieldset disabled="">DA</fieldset></td>
+        <td><button type="submit" (click)="deleteDisease(item)" class="btn btn-primary" id="diseaseButton">
+          Obrisi
+        </button></td>
+      </tr>
+      </tbody>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </section>
+</div>
