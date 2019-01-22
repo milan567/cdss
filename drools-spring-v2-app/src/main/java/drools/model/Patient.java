@@ -19,7 +19,7 @@ public class Patient {
     private String patientSurame;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Examination> examinations;
+    private List<Examination> examinations = new ArrayList<>();
 
     @ManyToMany
     private List<Ingredient> ingredientAllergies = new ArrayList<>();

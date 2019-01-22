@@ -75,7 +75,6 @@ public class Examination {
     }
 
     public void setDisease(Disease disease) {
-        System.out.println("Disease created");
         this.disease = disease;
     }
 

@@ -1,0 +1,59 @@
+package monitoring;
+
+import drools.model.*;
+import drools.event.*;
+import java.util.*;
+
+
+rule "Pacijent ima problema sa kiseonikom"
+    agenda-group "kiseonik"
+    when
+        $ole: OxygenLevelEvent (oxygenLevel < 70, $level: oxygenLevel, $patientId: patientId)
+        not (
+            OxygenLevelEvent (this != $ole, patientId == $patientId, oxygenLevel > $level)
+            over window:time(15m)
+        )
+    then
+        Issue issue = new Issue(IssueType.OXYGEN_PROBLEM, $patientId);
+        insert(issue);
+        drools.halt();
+end
+
+rule "Pacijent ima ubrzan srcani ritam"
+    agenda-group "srce"
+    when
+        $hbe1: HeartBeatEvent ($patientId: patientId)
+        Number(intValue >= 25) from accumulate (
+            $hbe: HeartBeatEvent (patientId == $patientId, this != $hbe1, this meets[10s] $hbe1),
+            count($hbe)
+        )
+    then
+        Issue issue = new Issue(IssueType.RAPID_HEART_RATE, $patientId);
+        insert(issue);
+        drools.halt();
+end
+
+rule "Pacijentu je hitno potrebna dijaliza"
+    agenda-group "dijaliza"
+    when
+        $p : Patient ($patientId: id, $examinations : examinations )
+        list : List(size>0) from accumulate (
+        		$ex : Examination(disease.disease=="Hronicna bubrezna bolest")
+        		from $examinations,
+        		collectList($ex)
+        	)
+        $hbev: HeartBeatEvent ($patientId == patientId)
+        Number(intValue >= 10) from accumulate (
+            $hbe: HeartBeatEvent (patientId == $patientId, this != $hbev, this meets[10s] $hbev),
+            count($hbe)
+        )
+        $uev: UrinationEvent( patientId == $patientId, $sum: amount )
+        Number(intValue < 100) from accumulate(
+            $ue : UrinationEvent (this != $uev, patientId == $patientId, $amount: amount, this meets[12h] $uev),
+            sum($amount)
+        )
+    then
+        Issue issue = new Issue(IssueType.URGENT_DIALYSIS, $patientId);
+        insert(issue);
+        drools.halt();
+end
