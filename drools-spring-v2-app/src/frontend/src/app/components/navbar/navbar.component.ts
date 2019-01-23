@@ -53,6 +53,7 @@ export class NavbarComponent implements OnInit
     this.addLink( {text: "Pacijenti", routerLink: "/sviPacijenti"});
     this.addLink({text: "Bolesti", routerLink: "/sveBolesti"});
     this.addLink({text: "Izvjestaj", routerLink: "/izvjestaj"});
+    this.addLink({text: "Lijekovi", routerLink: "/sviLijekovi"});
     this.addLink({text: "Logout", routerLink: "/"});
     this._router.navigateByUrl("/sviPacijenti");
   }

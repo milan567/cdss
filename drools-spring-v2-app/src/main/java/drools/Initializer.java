@@ -310,16 +310,16 @@ public class Initializer implements ApplicationRunner {
         medication.getIngredients().add(ingr4);
 
         Medication medication1 = new Medication("Amoksicilin", MedicationType.ANTIBIOTIC);
-        medication.getIngredients().add(ingr5);
-        medication.getIngredients().add(ingr6);
-        medication.getIngredients().add(ingr7);
-        medication.getIngredients().add(ingr8);
+        medication1.getIngredients().add(ingr5);
+        medication1.getIngredients().add(ingr6);
+        medication1.getIngredients().add(ingr7);
+        medication1.getIngredients().add(ingr8);
 
         Medication medication2 = new Medication("Motrin", MedicationType.OTHER);
-        medication.getIngredients().add(ingr7);
-        medication.getIngredients().add(ingr8);
-        medication.getIngredients().add(ingr9);
-        medication.getIngredients().add(ingr10);
+        medication2.getIngredients().add(ingr7);
+        medication2.getIngredients().add(ingr8);
+        medication2.getIngredients().add(ingr9);
+        medication2.getIngredients().add(ingr10);
 
         medicationService.save(medication);
         medicationService.save(medication1);

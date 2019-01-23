@@ -113,7 +113,7 @@
       <select   class="form-control" id="exampleSelect2" [(ngModel)]="diseaseOption">
         <option *ngFor="let item of allDiseases">{{item.disease}}</option>
       </select>
-      <button type="submit" (click)="getDiseaseWithSymptoms()" class="btn btn-primary" id="showDiseaseButton1">Prikazi bolest</button>
+      <button type="submit" (click)="getDiseaseWithSymptoms()" class="btn btn-primary" id="showDiseaseButton2">Prikazi bolest</button>
     </div>
   </div>
   <div class="container" ng-app="invoice" *ngIf="sortedSymptoms.length != 0">
@@ -165,6 +165,7 @@
       </select>
       <button type="submit" (click)="addMedication()" class="btn btn-primary">Prepisi lijek</button>
       <button type="submit" (click)="finishDiagnose()" class="btn btn-primary">Uspostavi dijagnozu</button>
+      <button type="submit" (click)="back()" class="btn btn-primary">Nazad</button>
     </div>
     </div>
   </section>
@@ -191,7 +192,8 @@
       <select   class="form-control" id="exampleSelect3" [(ngModel)]="diseaseOption">
         <option *ngFor="let item of allDiseases">{{item.disease}}</option>
       </select>
-      <button type="submit" (click)="getConfirmedDisease()" class="btn btn-primary" id="showDiseaseButton1">Prikazi bolest</button>
+      <button type="submit" (click)="getConfirmedDisease()" class="btn btn-primary" id="showDiseaseButton1">Potvrdi bolest</button>
+      <button type="submit" (click)="back()" class="btn btn-primary" id="showDiseaseButton3">Nazad</button>
     </div>
   </div>
 </div>

@@ -1,0 +1,34 @@
+<div class="container" ng-app="invoice">
+  <section class="row" ng-controller="InvoiceController">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Naziv</th>
+        <th>Vrsta</th>
+        <th><button type="submit" class="btn btn-primary" id="addDisease" (click)="addMedication()">Dodaj lijek</button></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of medications | paginate: {itemsPerPage:5, currentPage: p}">
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.id" class="form-control" /></fieldset></td>
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.text" class="form-control" /></fieldset></td>
+        <td *ngIf="item.medicationType == 'ANTIBIOTIC'"><fieldset disabled=""><input type="text" value="Antibiotik" class="form-control" /></fieldset></td>
+        <td *ngIf="item.medicationType == 'ANALGETIC'"><fieldset disabled=""><input type="text" value="Analgetik" class="form-control" /></fieldset></td>
+        <td *ngIf="item.medicationType == 'OTHER'"><fieldset disabled=""><input type="text" value="Ostalo" class="form-control" /></fieldset></td>
+        <td><button type="submit" (click)="showMedication(item.id)" class="btn btn-primary" id="diseaseButton">
+          Prikazi
+        </button></td>
+        <td><button type="submit" (click)="editMedication(item.id)" class="btn btn-primary" id="editMedicationButton">
+          Izmjeni
+        </button></td>
+        <td><button type="submit" (click)="deleteMedication(item.id)" class="btn btn-primary" id="deleteDiseaseButton">
+          Obrisi
+        </button></td>
+      </tr>
+      </tbody>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </section>
+</div>
+

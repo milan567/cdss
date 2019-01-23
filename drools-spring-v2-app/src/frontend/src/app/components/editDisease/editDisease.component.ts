@@ -90,6 +90,10 @@ export class EditDiseaseComponent {
     }
   }
 
+  back(){
+    this.creatingSymptom = false;
+  }
+
   public addNewSymptom()
   {
     if (this.text == ""){

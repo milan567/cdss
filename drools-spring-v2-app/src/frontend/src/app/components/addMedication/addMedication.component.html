@@ -1,0 +1,55 @@
+<div class="register">
+  <h3 *ngIf="!creatingIngredient">Dodaj novi lijek</h3>
+  <h3 *ngIf="creatingIngredient">Dodaj novi sastojak</h3>
+
+  <div class="form-group" *ngIf="!creatingIngredient">
+    <label for="rep">Unesite naziv lijeka:</label>
+    <input type="text" class="form-control" id="rep" placeholder="Naziv lijeka" name="usr" [(ngModel)]="name" >
+  </div>
+
+  <div class="form-group" *ngIf="creatingIngredient">
+    <label for="rep">Unesite naziv sastojka:</label>
+    <input type="text" class="form-control" id="rep1" placeholder="Naziv sastojka" name="usr" [(ngModel)]="text" >
+  </div>
+
+  <div class="form-group" *ngIf="medicationIngredients.length != 0 && !creatingIngredient">
+    <label for="symptomsOfDisease">Sastojci lijeka</label>
+    <table class="table table-hover" id ="symptomsOfDisease">
+      <tbody>
+      <tr *ngFor="let item of medicationIngredients | paginate: {itemsPerPage:2, currentPage: p}">
+        <td><fieldset disabled=""><input type="text" [(ngModel)]="item.text" class="form-control" /></fieldset></td>
+        <td><button type="submit" (click)="removeIngredient(item.id)" class="btn btn-primary" id="diseaseButton">
+          Ukloni sastojak
+        </button></td>
+      </tr>
+      </tbody>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </div>
+
+
+  <div class="form-group" *ngIf="!creatingIngredient">
+    <label for="exampleSelect1">Dodajte sastojak:</label>
+    <select   class="form-control" id="exampleSelect1" [(ngModel)]="option">
+      <option *ngFor="let item of ingredients">{{item.text}}</option>
+    </select>
+    <button type="submit" (click)="addIngredient()"  class="btn btn-primary" id="addSymptomButton">Dodaj sastojak</button>
+    <button type="submit" (click)="createNewIngredient()"  class="btn btn-primary" id="createSymptomButton">Kreiraj novi sastojak</button>
+  </div>
+
+
+
+  <div class="form-group" *ngIf="!creatingIngredient">
+    <label for="type">Odaberite tip lijeka:</label>
+    <select   class="form-control" id="type" [(ngModel)]="medicationType">
+      <option>Antibiotik</option>
+      <option>Analgetik</option>
+      <option>Ostalo</option>
+    </select>
+  </div>
+
+  <button *ngIf="!creatingIngredient" type="submit" (click)="addNewMedication()"  class="btn btn-primary" id="registerButton">Dodaj lijek</button>
+  <button *ngIf="creatingIngredient" type="submit" (click)="addNewIngredient()"  class="btn btn-primary" id="symptomButton">Dodaj sastojak</button>
+  <button *ngIf="creatingIngredient" type="submit" (click)="createNewIngredient()"  class="btn btn-primary" id="symptomButton">Nazad</button>
+
+</div>

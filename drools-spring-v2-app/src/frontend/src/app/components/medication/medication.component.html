@@ -1,7 +1,7 @@
 <div class="register">
-  <h3>Bolest</h3>
+  <h3>Lijek</h3>
 
-  <p *ngIf="disease"><b> {{disease.disease}}</b></p>
+  <p *ngIf="medication"><b> {{medication.text}}</b></p>
 </div>
 
 <div class="container" ng-app="invoice">
@@ -10,19 +10,13 @@
       <thead>
       <tr>
         <th>ID</th>
-        <th>Opis simptoma</th>
-        <th>Tip simptoma</th>
+        <th>Sastojak</th>
       </tr>
       </thead>
-      <tbody *ngIf="disease">
-      <tr *ngFor="let item of disease.symptoms | paginate: {itemsPerPage:5, currentPage: p}">
+      <tbody *ngIf="medication">
+      <tr *ngFor="let item of medication.ingredients | paginate: {itemsPerPage:5, currentPage: p}">
         <td><fieldset disabled=""><input type="text" [(ngModel)]="item.id" class="form-control" /></fieldset></td>
         <td><fieldset disabled=""><input type="text" [(ngModel)]="item.text" class="form-control" /></fieldset></td>
-        <td *ngIf="item.symptomType=='SPECIFIC'"><fieldset disabled="">Specificni</fieldset></td>
-        <td *ngIf="item.symptomType=='NONSPECIFIC'"><fieldset disabled="">Opsti</fieldset></td>
-        <td><button type="submit" (click)="deleteDisease(item)" class="btn btn-primary" id="diseaseButton">
-          Obrisi
-        </button></td>
       </tr>
       </tbody>
       <pagination-controls (pageChange)="p = $event"></pagination-controls>

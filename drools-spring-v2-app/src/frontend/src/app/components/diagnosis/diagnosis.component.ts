@@ -171,6 +171,8 @@ export class DiagnosisComponent{
     this.potentialDiseasesSelected = false;
     this.potentialDiseaseSelected = false;
     this.diseaseSelected = false;
+    this.finalDiseaseSelected = false;
+    this.ownDiagnoseSelected = false;
     this.diagnoseBool = true;
   }
 

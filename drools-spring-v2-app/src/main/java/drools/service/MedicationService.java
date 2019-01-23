@@ -15,4 +15,8 @@ public interface MedicationService {
     List<Medication> findAllMedications();
 
     CheckAllergiesResponseDTO checkAlergiest(Integer patientId, Integer medicationId, KieSession kieSession);
+
+    List<Medication> deleteMedication(Integer id);
+
+    Medication getMedication(Integer id);
 }

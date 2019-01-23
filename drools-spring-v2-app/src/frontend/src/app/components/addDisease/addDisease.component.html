@@ -54,5 +54,5 @@
 
   <button *ngIf="!creatingSymptom" type="submit" (click)="addDisease()"  class="btn btn-primary" id="registerButton">Dodaj bolest</button>
   <button *ngIf="creatingSymptom" type="submit" (click)="addNewSymptom()"  class="btn btn-primary" id="symptomButton">Dodaj simptom</button>
-
+  <button *ngIf="creatingSymptom" type="submit" (click)="createNewSymptom()"  class="btn btn-primary" id="back">Nazad</button>
 </div>

@@ -86,6 +86,17 @@ public class MedicationServiceImpl implements MedicationService {
         return carDTO;
     }
 
+    @Override
+    public List<Medication> deleteMedication(Integer id) {
+        medicationRepository.deleteById(id);
+        return medicationRepository.findAll();
+    }
+
+    @Override
+    public Medication getMedication(Integer id) {
+        return medicationRepository.getOne(id);
+    }
+
     public void release(KieSession kieSession) {
         for (Object object : kieSession.getObjects()) {
             if (!object.getClass().equals(Disease.class))

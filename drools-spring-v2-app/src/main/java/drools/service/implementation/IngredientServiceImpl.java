@@ -7,6 +7,8 @@ import drools.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class IngredientServiceImpl implements IngredientService {
 
@@ -21,5 +23,10 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Ingredient findIngredientByText(String text) {
         return ingredientRepository.findIngredientByText(text);
+    }
+
+    @Override
+    public List<Ingredient> findAllIngredients() {
+        return ingredientRepository.findAll();
     }
 }
